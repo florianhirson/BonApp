@@ -1,0 +1,75 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 26
+    defaultConfig {
+        applicationId "fr.hirsonf.stage"
+        minSdkVersion 24
+        targetSdkVersion 26
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation 'com.android.support:appcompat-v7:26.1.0'
+
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    testImplementation 'junit:junit:4.12'
+
+    //Firebase
+    compile 'com.google.firebase:firebase-core:11.4.2'
+    compile 'com.google.firebase:firebase-auth:11.4.2'
+    compile 'com.google.firebase:firebase-storage:11.4.2'
+
+    compile 'com.android.support:design:26.+'
+
+    //Gson
+    compile 'com.google.code.gson:gson:2.8.2'
+
+    //Appintro
+    compile 'com.github.apl-devs:appintro:v4.2.2'
+
+    // FirebaseUI for Firebase Realtime Database
+    compile 'com.firebaseui:firebase-ui-database:3.1.0'
+
+    // FirebaseUI for Cloud Firestore
+    compile 'com.firebaseui:firebase-ui-firestore:3.1.0'
+
+    // FirebaseUI for Firebase Auth
+    compile 'com.firebaseui:firebase-ui-auth:3.1.0'
+
+    // FirebaseUI for Cloud Storage
+    compile 'com.firebaseui:firebase-ui-storage:3.1.0'
+
+
+
+    //Butter Knife
+    compile 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+
+    //Material date picker
+    compile 'com.wdullaer:materialdatetimepicker:3.4.0'
+
+    //Material edit text
+    compile 'com.rengwuxian.materialedittext:library:2.1.4'
+
+    //Circle images
+    compile 'de.hdodenhof:circleimageview:2.2.0'
+
+    //Glide
+    compile 'com.github.bumptech.glide:glide:4.1.1'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.1.1'
+
+}
+
+apply plugin: 'com.google.gms.google-services'
