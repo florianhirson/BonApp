@@ -14,12 +14,6 @@
         android:padding="8dp"
         android:id="@+id/layout">
 
-
-        <FrameLayout
-            android:layout_weight="2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
             <de.hdodenhof.circleimageview.CircleImageView
 
                 android:id="@+id/profile"
@@ -35,52 +29,152 @@
                 android:src="@drawable/man"
                 app:civ_border_color="#FFFFFFFF"
                 app:civ_border_width="3dp" />
-        </FrameLayout>
 
-            <android.support.design.widget.TextInputLayout
+
+        <!--  Name Label -->
+        <android.support.design.widget.TextInputLayout
+            android:windowSoftInputMode="stateHidden"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp">
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:windowSoftInputMode="stateHidden"
+                android:id="@+id/edit_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_weight="2"
-                android:layout_marginTop="8dp">
+                android:hint="Name"
+                android:focusable="false"
+                android:clickable="false"
+                app:met_baseColor="@color/accent"
+                app:met_primaryColor="@color/accent"
+                app:met_errorColor="@color/white"
+                android:inputType="textPersonName" />
+        </android.support.design.widget.TextInputLayout>
 
-                <com.rengwuxian.materialedittext.MaterialEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/edit_address"
-                    android:hint="address"
-                    android:textSize="16sp"
-                    android:inputType="text"/>
-            </android.support.design.widget.TextInputLayout>
+        <!--  BirthDate Label -->
+        <android.support.design.widget.TextInputLayout
+            android:windowSoftInputMode="stateHidden"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp">
 
-            <android.support.design.widget.TextInputLayout
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:windowSoftInputMode="stateHidden"
+                android:id="@+id/edit_birthdate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp">
+                android:hint="Birthdate"
+                android:focusable="false"
+                android:clickable="false"
+                app:met_baseColor="@color/accent"
+                app:met_primaryColor="@color/accent"
+                app:met_errorColor="@color/white"
+                android:inputType="textPersonName" />
+        </android.support.design.widget.TextInputLayout>
 
-                <com.rengwuxian.materialedittext.MaterialEditText
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/edit_email"
-                    android:hint="email"
-                    android:textSize="16sp"
-                    android:inputType="textEmailAddress"/>
-            </android.support.design.widget.TextInputLayout>
+        <!--  Email Label -->
+        <android.support.design.widget.TextInputLayout
+            android:windowSoftInputMode="stateHidden"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp">
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:windowSoftInputMode="stateHidden"
+                android:id="@+id/text_mail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Email address"
+                android:focusable="false"
+                android:clickable="false"
+                app:met_baseColor="@color/accent"
+                app:met_primaryColor="@color/accent"
+                app:met_errorColor="@color/white"
+                android:inputType="textPersonName" />
+        </android.support.design.widget.TextInputLayout>
+
+
+        <!--  Address Label -->
+        <android.support.design.widget.TextInputLayout
+            android:windowSoftInputMode="stateHidden"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp">
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:windowSoftInputMode="stateHidden"
+                android:id="@+id/edit_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Address"
+                app:met_baseColor="@color/accent"
+                app:met_primaryColor="@color/accent"
+                app:met_errorColor="@color/white"
+                android:inputType="textPersonName" />
+        </android.support.design.widget.TextInputLayout>
+
+
+
+        <!-- mobile number -->
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp">
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/edit_mobile"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Mobile Number"
+                app:met_baseColor="@color/accent"
+                app:met_primaryColor="@color/accent"
+                app:met_errorColor="@color/white"
+                android:inputType="number" />
+        </android.support.design.widget.TextInputLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/b_edit_email"
+                android:layout_width="0px"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Email address"
+                android:drawableLeft="@drawable/ic_mode_edit_white_48px"
+                />
+
+            <Button
+                android:id="@+id/b_edit_pwd"
+                android:layout_width="0px"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:text="Password"
+                android:drawableLeft="@drawable/ic_mode_edit_white_48px"
+                />
+        </LinearLayout>
+
 
         <Button
             android:id="@+id/b_ok"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text="Valider les changements"
+            android:text="Validate"
         />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/t_cancel"
+            android:id="@+id/b_cancel"
             android:gravity="center"
             android:textSize="16sp"
             android:text="Cancel"

@@ -30,22 +30,23 @@
         </activity>
         <activity
             android:name=".activities.SignupActivity"
-            android:windowSoftInputMode="stateHidden"
-            android:label="Signup" />
+            android:label="Signup"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activities.LoginActivity"
-            android:windowSoftInputMode="stateHidden"
-            android:label="Login" />
+            android:label="Login"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activities.HomeActivity"
-            android:label="Home"
-            />
-
+            android:label="Home" />
         <activity
             android:name=".activities.ProfileActivity"
             android:label="Profile"
-            />
-
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".activities.EditEmailActivity"
+            android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".activities.EditPasswordActivity"
+            android:windowSoftInputMode="stateHidden" />
     </application>
 
 </manifest>

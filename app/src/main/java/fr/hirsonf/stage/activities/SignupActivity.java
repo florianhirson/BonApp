@@ -140,8 +140,6 @@ public class SignupActivity extends AppCompatActivity implements DatePickerDialo
         );
         dpd.setVersion(DatePickerDialog.Version.VERSION_2);
         dpd.setAccentColor(getColor(R.color.primary));
-
-
     }
 
     @Override

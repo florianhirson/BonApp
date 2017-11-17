@@ -10,11 +10,13 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -32,6 +34,7 @@ import com.google.gson.Gson;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import fr.hirsonf.stage.R;
+import stage.bo.GlideApp;
 import stage.bo.MyUser;
 import stage.fragments.NoticeDialogFragment;
 
@@ -62,6 +65,7 @@ public class LoginActivity extends AppCompatActivity
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
 
@@ -149,6 +153,8 @@ public class LoginActivity extends AppCompatActivity
                             if (!firebaseUser.isEmailVerified()) {
                                 Toast.makeText(LoginActivity.this, "Check your emails to verify your account.",
                                         Toast.LENGTH_SHORT).show();
+                                _loginButton.setEnabled(true);
+                                progress.hide();
                             } else {
                                 downloadProfileData(firebaseUser);
 
@@ -169,6 +175,14 @@ public class LoginActivity extends AppCompatActivity
     }
 
     public void downloadProfileData(final FirebaseUser firebaseUser) {
+        StorageReference profilePictureRef = storageRef.child("profilePictures")
+                .child(firebaseUser.getUid())
+                .child("profile.jpg");
+
+        // Download directly from StorageReference using Glide
+
+        // Load the image using Glide
+
         mDatabaseReference.child("users").child(firebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -192,6 +206,8 @@ public class LoginActivity extends AppCompatActivity
         Context context = getBaseContext();
         SharedPreferences mPrefs = context.getSharedPreferences("userdetails", MODE_PRIVATE);
         SharedPreferences.Editor prefsEditor = mPrefs.edit();
+
+
 
 
         prefsEditor.putString("myUser", new Gson().toJson(myUser));

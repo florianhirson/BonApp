@@ -17,6 +17,14 @@ public class MyUser {
 
     public MyUser() {}
 
+    public MyUser (MyUser myUser) {
+        this.setName(myUser.getName());
+        this.setEmail(myUser.getEmail());
+        this.setAddress(myUser.getAddress());
+        this.setMobile(myUser.getMobile());
+        this.setBirthdate(myUser.getBirthdate());
+    }
+
     public String getAddress() {
         return address;
     }
@@ -60,5 +68,18 @@ public class MyUser {
     @Override
     public String toString() {
         return "Name : " + getName() + "\nAddress : " + getAddress() + "\nMobile : " + getMobile() + "\nMail : " + getEmail() + "\nBirthdate : " +getBirthdate();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (obj == null) return false;
+        if (getClass() != obj.getClass()) return false;
+        MyUser myUser = (MyUser) obj;
+        if(!this.getName().equals(myUser.getName())) return  false;
+        if(!this.getAddress().equals(myUser.getAddress())) return  false;
+        if(!this.getEmail().equals(myUser.getEmail())) return  false;
+        if(!this.getMobile().equals(myUser.getMobile())) return  false;
+        return true;
     }
 }
