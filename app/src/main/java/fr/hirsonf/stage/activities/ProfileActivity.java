@@ -1,5 +1,6 @@
 package fr.hirsonf.stage.activities;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -7,12 +8,11 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -22,9 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.signature.ObjectKey;
-import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -34,19 +32,18 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
 
 import java.io.IOException;
-import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 import fr.hirsonf.stage.R;
 import stage.bo.GlideApp;
-import stage.bo.MyAppGlideModule;
 import stage.bo.MyUser;
 
 /**
@@ -68,7 +65,6 @@ public class ProfileActivity extends AppCompatActivity {
     @BindView(R.id.edit_name) EditText _nameText;
     @BindView(R.id.edit_address) EditText _addressText;
     @BindView(R.id.edit_mobile) EditText _mobileText;
-    @BindView(R.id.text_mail) EditText _mailText;
     @BindView(R.id.edit_birthdate) EditText _birthdateText;
 
     @BindView(R.id.b_edit_email) Button editEmail;
@@ -80,8 +76,9 @@ public class ProfileActivity extends AppCompatActivity {
     private static final String ADDRESS_KEY = "address";
     private static final String MOBILE_KEY = "mobile";
 
-
+    private ProgressDialog progress;
     private int RESULT_LOAD_IMG = 1;
+    private int profilePictureVersion;
     private Uri selectedImage;
     private MyUser myUser;
 
@@ -99,37 +96,48 @@ public class ProfileActivity extends AppCompatActivity {
         storage = FirebaseStorage.getInstance();
         // Create a storage reference from our app
         storageRef = storage.getReference();
-
-        FirebaseUser firebaseUser = mAuth.getCurrentUser();
-
-        StorageReference profilePictureRef = storageRef.child("profilePictures")
-                .child(firebaseUser.getUid())
-                .child("profile.jpg");
-
-        // Download directly from StorageReference using Glide
-
-        // Load the image using Glide
-        GlideApp.with(this /* context */)
-                .load(profilePictureRef)
-                .into(profile);
-
-
+        profilePictureVersion = mPrefs.getInt("profilePictureVersion", 0);
 
         myUser = new Gson().fromJson(mPrefs.getString("myUser", null), MyUser.class);
 
         _nameText.setText(myUser.getName());
         _addressText.setText(myUser.getAddress());
         _mobileText.setText(myUser.getMobile());
-        _mailText.setText(myUser.getEmail());
         _birthdateText.setText(myUser.getBirthdate());
 
         fetchDataFromBundle(savedInstanceState);
+
+        final FirebaseUser firebaseUser = mAuth.getCurrentUser();
+
+        if(profilePictureVersion == 0) {
+            profilePicturesRef = storageRef.child("profilePictures")
+                    .child(firebaseUser.getUid()).child("profile.jpg");
+
+        } else  {
+            profilePicturesRef = storageRef.child("profilePictures")
+                    .child(firebaseUser.getUid()).child("profile" + profilePictureVersion + ".jpg");
+        }
+
+        GlideApp.with(this /* context */)
+                .load(profilePicturesRef)
+                .into(profile);
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         final FirebaseUser firebaseUser = mAuth.getCurrentUser();
+
+        if(profilePictureVersion == 0) {
+            profilePicturesRef = storageRef.child("profilePictures")
+                    .child(firebaseUser.getUid()).child("profile.jpg");
+
+        } else  {
+            profilePicturesRef = storageRef.child("profilePictures")
+                    .child(firebaseUser.getUid()).child("profile" + profilePictureVersion + ".jpg");
+        }
+
+
 
         ok.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,13 +146,6 @@ public class ProfileActivity extends AppCompatActivity {
                     myUser.setAddress(_addressText.getText().toString());
                     myUser.setMobile(_mobileText.getText().toString());
                     addData(firebaseUser);
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            Glide.get(ProfileActivity.this).clearDiskCache();
-                        }
-                    }).start();
-                    Glide.get(ProfileActivity.this).clearMemory();
                 }
             }
         });
@@ -249,12 +250,29 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     public void createProfilePicture(FirebaseUser firebaseUser) {
-        profilePicturesRef = storageRef.child("profilePictures").child(firebaseUser.getUid()).child("profile.jpg");
+        SharedPreferences.Editor prefsEditor = mPrefs.edit();
+        profilePictureVersion++;
+        prefsEditor.putInt("profilePictureVersion", profilePictureVersion);
+        prefsEditor.apply();
+
+        if(profilePictureVersion == 0) {
+            profilePicturesRef = storageRef.child("profilePictures")
+                    .child(firebaseUser.getUid()).child("profile.jpg");
+
+        } else  {
+            profilePicturesRef = storageRef.child("profilePictures")
+                    .child(firebaseUser.getUid()).child("profile" + profilePictureVersion + ".jpg");
+        }
+
         profilePicturesRef.putFile(selectedImage)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         Log.d(TAG, "Profile picture upload successful: ");
+                        GlideApp.with(ProfileActivity.this)
+                                .load(profilePicturesRef)
+                                .centerCrop()
+                                .into(profile);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -322,5 +340,6 @@ public class ProfileActivity extends AppCompatActivity {
 
         return valid;
     }
+
 
 }

@@ -75,29 +75,6 @@
                 android:inputType="textPersonName" />
         </android.support.design.widget.TextInputLayout>
 
-        <!--  Email Label -->
-        <android.support.design.widget.TextInputLayout
-            android:windowSoftInputMode="stateHidden"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp">
-
-            <com.rengwuxian.materialedittext.MaterialEditText
-                android:windowSoftInputMode="stateHidden"
-                android:id="@+id/text_mail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Email address"
-                android:focusable="false"
-                android:clickable="false"
-                app:met_baseColor="@color/accent"
-                app:met_primaryColor="@color/accent"
-                app:met_errorColor="@color/white"
-                android:inputType="textPersonName" />
-        </android.support.design.widget.TextInputLayout>
-
-
         <!--  Address Label -->
         <android.support.design.widget.TextInputLayout
             android:windowSoftInputMode="stateHidden"

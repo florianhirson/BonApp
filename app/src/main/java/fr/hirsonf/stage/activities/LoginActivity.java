@@ -175,14 +175,6 @@ public class LoginActivity extends AppCompatActivity
     }
 
     public void downloadProfileData(final FirebaseUser firebaseUser) {
-        StorageReference profilePictureRef = storageRef.child("profilePictures")
-                .child(firebaseUser.getUid())
-                .child("profile.jpg");
-
-        // Download directly from StorageReference using Glide
-
-        // Load the image using Glide
-
         mDatabaseReference.child("users").child(firebaseUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
