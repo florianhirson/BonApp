@@ -29,17 +29,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
-        mAuth.signOut();
+
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser == null) {
             Intent intent = new Intent(MainActivity.this, LoginActivity.class);
             startActivity(intent);
         } else {
-            // TODO: Redirect to account screen or home i dunno
             Toast.makeText(MainActivity.this, "Connected",
                     Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+            Intent intent = new Intent(MainActivity.this, HomeActivity.class);
             startActivity(intent);
         }
 

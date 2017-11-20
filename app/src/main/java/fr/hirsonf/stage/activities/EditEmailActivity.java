@@ -103,7 +103,6 @@ public class EditEmailActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Void> task) {
                         Log.d(TAG, "User email address updated.");
                         updateEmailInDatabase(firebaseUser);
-
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

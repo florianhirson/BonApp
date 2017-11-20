@@ -75,6 +75,15 @@
                 android:inputType="textPersonName" />
         </android.support.design.widget.TextInputLayout>
 
+        <View
+            android:id="@+id/SplitLine_hor1"
+            android:layout_width="match_parent"
+            android:layout_height= "4dp"
+            android:background="@color/accent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            />
+
         <!--  Address Label -->
         <android.support.design.widget.TextInputLayout
             android:windowSoftInputMode="stateHidden"
