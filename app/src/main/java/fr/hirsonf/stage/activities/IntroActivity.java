@@ -1,7 +1,7 @@
 package fr.hirsonf.stage.activities;
 
+import android.Manifest;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,7 +15,9 @@ import fr.hirsonf.stage.R;
  * Created by flohi on 06/11/2017.
  */
 
-public class IntroActivity extends AppIntro {
+public class IntroActivity extends AppIntro{
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,30 +31,35 @@ public class IntroActivity extends AppIntro {
         //addSlide(thirdFragment);
         //addSlide(fourthFragment);
 
+        // Ask for ACCESS_FINE_LOCATION permission on the second slide
+
+        askForPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 2);
+
+
         // Instead of fragments, you can also use our default slide
         // Just set a title, description, background and image. AppIntro will do the rest.
-        addSlide(AppIntroFragment.newInstance("Titre 1! ", "Euh ?", "Description 1!!! ", "WTF",
-                R.drawable.yes,
-                getColor(R.color.colorBg),
-                getColor(R.color.colorTitle),
-                getColor(R.color.colorDesc)));
+        addSlide(AppIntroFragment.newInstance("Welcome to BonApp' !", "", "The reference app for businessmen looking to eat ! ", "",
+                R.drawable.logo,
+                getColor(R.color.primary),
+                getColor(R.color.accent),
+                getColor(R.color.accent)));
 
-        addSlide(AppIntroFragment.newInstance("Titre 2! ", "Euh ?", "Description 2!!! ", "WTF",
-                R.drawable.yes,
-                getColor(R.color.colorBg),
-                getColor(R.color.colorTitle),
-                getColor(R.color.colorDesc)));
+        addSlide(AppIntroFragment.newInstance("Location", "", "We need to get your location ", "",
+                R.drawable.ic_location_on_map,
+                getColor(R.color.primary),
+                getColor(R.color.accent),
+                getColor(R.color.accent)));
 
-        addSlide(AppIntroFragment.newInstance("Titre 3! ", "Euh ?", "Description 3!!! ", "WTF",
-                R.drawable.yes,
-                getColor(R.color.colorBg),
-                getColor(R.color.colorTitle),
-                getColor(R.color.colorDesc)));
+        addSlide(AppIntroFragment.newInstance("Titre 3! ", "", "Description 3!!! ", "",
+                R.drawable.logo,
+                getColor(R.color.primary),
+                getColor(R.color.accent),
+                getColor(R.color.accent)));
 
         // OPTIONAL METHODS
         // Override bar/separator color.
-        setBarColor(Color.parseColor("#3F51B5"));
-        setSeparatorColor(Color.parseColor("#2196F3"));
+        setBarColor(getColor(R.color.primary));
+        setSeparatorColor(getColor(R.color.accent));
 
         // Hide Skip/Done button.
         showSkipButton(false);
@@ -63,6 +70,7 @@ public class IntroActivity extends AppIntro {
         setVibrate(true);
         setVibrateIntensity(30);
     }
+
 
     @Override
     public void onBackPressed() {

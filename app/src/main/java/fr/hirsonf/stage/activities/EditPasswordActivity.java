@@ -106,7 +106,7 @@ public class EditPasswordActivity extends AppCompatActivity {
         AuthCredential credential = EmailAuthProvider
                 .getCredential(firebaseUser.getEmail(), oldPassword);
 
-// Prompt the user to re-provide their sign-in credentials
+        // Prompt the user to re-provide their sign-in credentials
         firebaseUser.reauthenticate(credential)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -127,7 +127,6 @@ public class EditPasswordActivity extends AppCompatActivity {
                         }
                     }
                 });
-
     }
 
     public void updatePassword(FirebaseUser firebaseUser, String newPassword) {
