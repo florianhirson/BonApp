@@ -1,4 +1,4 @@
-package stage.bo;
+package stage.utils;
 
 import android.content.Context;
 

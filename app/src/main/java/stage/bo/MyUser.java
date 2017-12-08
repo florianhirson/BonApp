@@ -14,6 +14,11 @@ public class MyUser {
     private String mobile;
     private String birthdate;
     private String email;
+    private String firstName;
+    private String userName;
+    private String gender;
+
+
 
     public MyUser() {}
 
@@ -23,6 +28,35 @@ public class MyUser {
         this.setAddress(myUser.getAddress());
         this.setMobile(myUser.getMobile());
         this.setBirthdate(myUser.getBirthdate());
+        this.setFirstName(myUser.getFirstName());
+        this.setGender(myUser.getGender());
+        this.setUserName(myUser.getUserName());
+
+    }
+
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
     public String getAddress() {

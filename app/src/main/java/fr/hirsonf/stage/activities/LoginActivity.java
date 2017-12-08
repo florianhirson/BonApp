@@ -33,7 +33,6 @@ import com.google.gson.Gson;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import fr.hirsonf.stage.R;
-import stage.bo.GlideApp;
 import stage.bo.MyUser;
 import stage.fragments.NoticeDialogFragment;
 
@@ -64,6 +63,7 @@ public class LoginActivity extends AppCompatActivity
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
@@ -154,8 +154,6 @@ public class LoginActivity extends AppCompatActivity
                                 progress.hide();
                             } else {
                                 downloadProfileData(firebaseUser);
-
-
                             }
 
 

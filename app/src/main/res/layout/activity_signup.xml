@@ -43,6 +43,9 @@
             app:civ_border_color="#FFFFFFFF"
             app:civ_border_width="3dp" />
 
+
+
+
         <!-- Name Label -->
         <android.support.design.widget.TextInputLayout
             android:windowSoftInputMode="stateHidden"
@@ -62,6 +65,87 @@
                 app:met_errorColor="@color/white"
                 android:inputType="textPersonName" />
         </android.support.design.widget.TextInputLayout>
+
+
+
+        <!-- FirstName Label -->
+        <android.support.design.widget.TextInputLayout
+            android:windowSoftInputMode="stateHidden"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp">
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:windowSoftInputMode="stateHidden"
+                android:id="@+id/input_first_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="First Name"
+                app:met_baseColor="@color/accent"
+                app:met_primaryColor="@color/accent"
+                app:met_errorColor="@color/white"
+                android:inputType="textPersonName" />
+        </android.support.design.widget.TextInputLayout>
+
+        <!-- UserName Label -->
+        <android.support.design.widget.TextInputLayout
+            android:windowSoftInputMode="stateHidden"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp">
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:windowSoftInputMode="stateHidden"
+                android:id="@+id/input_username"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Username"
+                app:met_baseColor="@color/accent"
+                app:met_primaryColor="@color/accent"
+                app:met_errorColor="@color/white"
+                android:inputType="textPersonName" />
+        </android.support.design.widget.TextInputLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Gender"
+                android:textSize="18sp"/>
+
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/radiogroup_gender"
+                android:checkedButton="@+id/radiobutton_male"
+                >
+
+                <RadioButton
+                    android:layout_width="0px"
+                    android:id="@+id/radiobutton_male"
+                    android:layout_height="wrap_content"
+                    android:text="Male"
+                    android:layout_weight="1"/>
+
+                <RadioButton
+                    android:layout_width="0px"
+                    android:id="@+id/radiobutton_female"
+                    android:layout_height="wrap_content"
+                    android:text="Female"
+                    android:layout_weight="1"/>
+
+            </RadioGroup>
+        </LinearLayout>
+
 
         <!-- Address Label -->
         <android.support.design.widget.TextInputLayout

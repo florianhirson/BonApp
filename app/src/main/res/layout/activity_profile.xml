@@ -1,10 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+
+<LinearLayout
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/primary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
 
     <LinearLayout
         android:orientation="vertical"
@@ -14,21 +32,21 @@
         android:padding="8dp"
         android:id="@+id/layout">
 
-            <de.hdodenhof.circleimageview.CircleImageView
+        <de.hdodenhof.circleimageview.CircleImageView
 
-                android:id="@+id/profile"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
-                android:layout_gravity="center_horizontal"
+            android:id="@+id/profile"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_gravity="center_horizontal"
 
-                android:clickable="true"
-                android:elevation="5dp"
-                android:focusable="true"
-                android:padding="20dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/man"
-                app:civ_border_color="#FFFFFFFF"
-                app:civ_border_width="3dp" />
+            android:clickable="true"
+            android:elevation="5dp"
+            android:focusable="true"
+            android:padding="20dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/man"
+            app:civ_border_color="#FFFFFFFF"
+            app:civ_border_width="3dp" />
 
 
         <!--  Name Label -->
@@ -52,6 +70,52 @@
                 app:met_errorColor="@color/white"
                 android:inputType="textPersonName" />
         </android.support.design.widget.TextInputLayout>
+
+        <!--  first Name Label -->
+        <android.support.design.widget.TextInputLayout
+            android:windowSoftInputMode="stateHidden"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp">
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:windowSoftInputMode="stateHidden"
+                android:id="@+id/edit_first_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="First Name"
+                android:focusable="false"
+                android:clickable="false"
+                app:met_baseColor="@color/accent"
+                app:met_primaryColor="@color/accent"
+                app:met_errorColor="@color/white"
+                android:inputType="textPersonName" />
+        </android.support.design.widget.TextInputLayout>
+
+                <!--  Gender Label -->
+        <android.support.design.widget.TextInputLayout
+            android:windowSoftInputMode="stateHidden"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp">
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:windowSoftInputMode="stateHidden"
+                android:id="@+id/edit_gender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Gender"
+                android:focusable="false"
+                android:clickable="false"
+                app:met_baseColor="@color/accent"
+                app:met_primaryColor="@color/accent"
+                app:met_errorColor="@color/white"
+                android:inputType="textPersonName" />
+        </android.support.design.widget.TextInputLayout>
+
+
 
         <!--  BirthDate Label -->
         <android.support.design.widget.TextInputLayout
@@ -83,6 +147,26 @@
             android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
             />
+
+        <!--  UserName Label -->
+        <android.support.design.widget.TextInputLayout
+            android:windowSoftInputMode="stateHidden"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp">
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:windowSoftInputMode="stateHidden"
+                android:id="@+id/edit_user_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="User Name"
+                app:met_baseColor="@color/accent"
+                app:met_primaryColor="@color/accent"
+                app:met_errorColor="@color/white"
+                android:inputType="textPersonName" />
+        </android.support.design.widget.TextInputLayout>
 
         <!--  Address Label -->
         <android.support.design.widget.TextInputLayout
@@ -155,7 +239,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Validate"
-        />
+            />
+
 
         <TextView
             android:layout_width="match_parent"
@@ -169,4 +254,5 @@
 
 
     </LinearLayout>
-</ScrollView>
+    </ScrollView>
+</LinearLayout>
