@@ -2,7 +2,7 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:padding="8dp">
 
     <TextView
@@ -11,16 +11,25 @@
         android:layout_height="wrap_content"
         android:text="A List item title"
         android:textSize="16sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+
+        android:textColor="@color/accent"/>
 
     <TextView
-        android:id="@+id/listDescription"
+        android:id="@+id/listDistance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/listTitle"
         android:layout_marginTop="5dp"
         android:maxLines="4"
         android:text="The List item distance"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        android:textColor="@color/accent"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/listDistance"
+        android:text="blabla"/>
 
 </RelativeLayout>

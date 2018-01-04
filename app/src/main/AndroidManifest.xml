@@ -40,19 +40,7 @@
             android:name=".activities.LoginActivity"
             android:label="Login"
             android:windowSoftInputMode="stateHidden">
-            <intent-filter android:autoVerify="true">
-                <action android:name="android.intent.action.VIEW" />
 
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="https://a9j9a.app.goo.gl/"
-                    android:scheme="http" />
-                <data
-                    android:host="https://a9j9a.app.goo.gl/"
-                    android:scheme="https" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".activities.HomeActivity"

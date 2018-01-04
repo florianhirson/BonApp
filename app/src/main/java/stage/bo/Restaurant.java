@@ -6,9 +6,9 @@ package stage.bo;
 
 public class Restaurant {
     private String name;
-    private String distance;
+    private double distance;
 
-    public Restaurant(String name, String distance) {
+    public Restaurant(String name, double distance) {
         this.name = name;
         this.distance = distance;
     }
@@ -21,11 +21,16 @@ public class Restaurant {
         this.name = name;
     }
 
-    public String getDistance() {
+    public double getDistance() {
         return distance;
     }
 
-    public void setDistance(String distance) {
+    public void setDistance(double distance) {
         this.distance = distance;
+    }
+
+    @Override
+    public String toString() {
+        return "Restaurant : " + this.getName() + ", distance to position : " + this.getDistance();
     }
 }

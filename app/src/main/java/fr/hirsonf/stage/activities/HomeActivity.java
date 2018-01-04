@@ -9,7 +9,6 @@ import android.content.IntentSender;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,10 +16,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -29,7 +25,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RadioGroup;
@@ -42,7 +37,6 @@ import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
 import com.firebase.geofire.GeoQuery;
 import com.firebase.geofire.GeoQueryEventListener;
-import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
@@ -59,9 +53,7 @@ import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -76,6 +68,8 @@ import java.util.Date;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import fr.hirsonf.stage.R;
+import stage.bo.Restaurant;
+import stage.utils.RestaurantAdapter;
 
 public class HomeActivity extends AppCompatActivity  {
 
@@ -99,8 +93,8 @@ public class HomeActivity extends AppCompatActivity  {
     private int maxValue;
     private Place selectedPlace;
 
-    ArrayList<String> list=new ArrayList<>();
-    private ArrayAdapter<String> adapter;
+    ArrayList<Restaurant> list;
+    private RestaurantAdapter adapter;
 
     // The entry point to the Fused Location Provider.
     private FusedLocationProviderClient mFusedLocationProviderClient;
@@ -186,6 +180,7 @@ public class HomeActivity extends AppCompatActivity  {
         registerReceiver(gpsReceiver, new IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION));
         initGoogleAPIClient();//Init Google API Client
         checkPermissions();//Check Permission
+        list =new ArrayList<>();
 
 
         if(savedInstanceState != null) {
@@ -226,7 +221,6 @@ public class HomeActivity extends AppCompatActivity  {
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
-                // TODO: Get info about the selected place.
                 Log.i(TAG, "Place: " + place.getName());
                 selectedPlace = place;
 
@@ -234,7 +228,6 @@ public class HomeActivity extends AppCompatActivity  {
 
             @Override
             public void onError(Status status) {
-                // TODO: Handle the error.
                 Log.i(TAG, "An error occurred: " + status);
             }
         });
@@ -254,7 +247,7 @@ public class HomeActivity extends AppCompatActivity  {
             }
         });
 
-        adapter=new ArrayAdapter<String>(this,android.R.layout.simple_dropdown_item_1line,list);
+        adapter=new RestaurantAdapter(this,0,list);
         listView.setAdapter(adapter);
 
         rangebar.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
@@ -295,8 +288,6 @@ public class HomeActivity extends AppCompatActivity  {
             public void onClick(View v) {
                 Log.d(TAG, "Button search pressed");
                 initGoogleAPIClient();//Init Google API Client
-                list.clear();
-                adapter.notifyDataSetChanged();
                 if(radioGroupAddressType.getCheckedRadioButtonId() == R.id.radiobutton_address && selectedPlace != null) {
                     doGeoQuery(selectedPlace.getLatLng());
                 } else if (radioGroupAddressType.getCheckedRadioButtonId() == R.id.radiobutton_location) {
@@ -645,17 +636,29 @@ public class HomeActivity extends AppCompatActivity  {
         }
     }
 
-    private void doGeoQuery(LatLng mLastKnownLocation) {
+    private void doGeoQuery(final LatLng mLastKnownLocation) {
         list.clear();
-        adapter.notifyDataSetChanged();
         GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(mLastKnownLocation.latitude, mLastKnownLocation.longitude), range);
         geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
             @Override
             public void onKeyEntered(String key, GeoLocation location) {
                 System.out.println(String.format("Key %s entered the search area at [%f,%f]", key, location.latitude, location.longitude));
-                LatLng loc = new LatLng(location.latitude, location.longitude);
-                list.add(key);
+
+                Location location1 = new Location("");
+                location1.setLatitude(mLastKnownLocation.latitude);
+                location1.setLongitude(mLastKnownLocation.longitude);
+
+                Location location2 = new Location("");
+                location2.setLatitude(location.latitude);
+                location2.setLongitude(location.longitude);
+
+                double distance = location1.distanceTo(location2);
+                Restaurant r = new Restaurant(key, distance);
+                list.add(r);
                 adapter.notifyDataSetChanged();
+
+                Log.w(TAG,"add" + r);
+                Log.w(TAG,"restaurant list : " + adapter.getRestaurantList());
 
             }
 
