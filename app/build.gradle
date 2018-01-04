@@ -27,6 +27,9 @@ dependencies {
     implementation 'com.google.android.gms:play-services-maps:11.4.2'
     testImplementation 'junit:junit:4.12'
 
+    //RangeBar
+    compile 'com.edmodo:rangebar:1.0.0'
+
     //Firebase
     compile 'com.google.firebase:firebase-core:11.4.2'
     compile 'com.google.firebase:firebase-auth:11.4.2'

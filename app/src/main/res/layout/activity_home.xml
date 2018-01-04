@@ -14,16 +14,138 @@
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:text="Bienvenue !" />
 
-    <Button
+
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/maps"
-        android:text="Maps"/>
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Select your type of address : "
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:gravity="center_horizontal"
+                />
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/radiogroup_address_type"
+                android:checkedButton="@+id/radiobutton_address"
+                >
+
+                <RadioButton
+                    android:layout_width="0px"
+                    android:id="@+id/radiobutton_address"
+                    android:layout_height="wrap_content"
+                    android:text="Address"
+                    android:layout_weight="1"/>
+
+                <RadioButton
+                    android:layout_width="0px"
+                    android:id="@+id/radiobutton_location"
+                    android:layout_height="wrap_content"
+                    android:text="Geolocalisation"
+                    android:layout_weight="1"/>
+
+            </RadioGroup>
+
+            <fragment
+                android:id="@+id/place_autocomplete_fragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Price : "
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:gravity="center_horizontal"
+                />
+
+            <com.edmodo.rangebar.RangeBar
+                android:id="@+id/rangebar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="2"
+                android:layout_margin="8dp"
+                >
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:id="@+id/t_min_price"
+                    android:text="Min : 5€"
+                    android:gravity="center_horizontal"/>
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:id="@+id/t_max_price"
+                    android:text="Max : 50€"
+                    android:gravity="center_horizontal"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Range : "
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:gravity="center_horizontal"
+                />
+
+            <SeekBar
+                android:id="@+id/seekbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:progress="20"
+                android:secondaryProgress="20"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/t_rayon"
+                android:text="Range : 5km"
+                android:gravity="center_horizontal"/>
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/search"
+                android:text="Search ! "/>
+
+            <ListView
+                android:id="@+id/listView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+            </ListView>
+
+        </LinearLayout>
+
+
+
+    </ScrollView>
+
 
 </LinearLayout>

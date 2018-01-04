@@ -56,7 +56,11 @@
         </activity>
         <activity
             android:name=".activities.HomeActivity"
-            android:label="Home" />
+            android:label="Home" >
+            <intent-filter>
+                <action android:name="android.location.PROVIDERS_CHANGED" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".activities.ProfileActivity"
             android:label="Profile"

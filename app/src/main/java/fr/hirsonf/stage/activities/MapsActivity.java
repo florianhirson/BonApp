@@ -26,12 +26,17 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
+import android.widget.ListView;
+import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.geofire.GeoFire;
 import com.firebase.geofire.GeoLocation;
+import com.firebase.geofire.GeoQuery;
+import com.firebase.geofire.GeoQueryEventListener;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
@@ -61,6 +66,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.GeoPoint;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import fr.hirsonf.stage.R;
@@ -90,9 +99,10 @@ public class MapsActivity extends AppCompatActivity
 
     // A default location (Sydney, Australia) and default zoom to use when location permission is
     // not granted.
-    private final LatLng mDefaultLocation = new LatLng(-33.8523341, 151.2106085);
+    private final LatLng mDefaultLocation = new LatLng(55.865593, -4.252657);
     private static final int DEFAULT_ZOOM = 15;
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
+    private int range;
     private boolean mLocationPermissionGranted;
 
     // The geographical location where the device is currently located. That is, the last-known
@@ -115,11 +125,18 @@ public class MapsActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         registerReceiver(gpsReceiver, new IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION));
+
         initGoogleAPIClient();//Init Google API Client
         checkPermissions();//Check Permission
 
+        Intent i= getIntent();
+        Bundle b = i.getExtras();
+
+        if(b!=null)
+        {
+            range = (int) b.get("range");
+        }
 
         // Retrieve location and camera position from saved instance state.
         if (savedInstanceState != null) {
@@ -150,11 +167,13 @@ public class MapsActivity extends AppCompatActivity
         mapFragment.getMapAsync(this);
 
         locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
+
         }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        unregisterReceiver(gpsReceiver);
     }
 
     /**
@@ -339,6 +358,11 @@ public class MapsActivity extends AppCompatActivity
                                         }
                                     }
                                 });
+
+                                doGeoQuery(mLastKnownLocation);
+
+
+
                             }
                         } else {
                             Log.d(TAG, "Current location is null. Using defaults.");
@@ -355,6 +379,40 @@ public class MapsActivity extends AppCompatActivity
         } catch (SecurityException e)  {
             Log.e("Exception: %s", e.getMessage());
         }
+    }
+
+    private void doGeoQuery(Location mLastKnownLocation) {
+        GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude()), range);
+        geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
+            @Override
+            public void onKeyEntered(String key, GeoLocation location) {
+                System.out.println(String.format("Key %s entered the search area at [%f,%f]", key, location.latitude, location.longitude));
+                LatLng loc = new LatLng(location.latitude, location.longitude);
+                mMap.addMarker(new MarkerOptions().position(loc)
+                        .title(key));
+            }
+
+            @Override
+            public void onKeyExited(String key) {
+                System.out.println(String.format("Key %s is no longer in the search area", key));
+            }
+
+            @Override
+            public void onKeyMoved(String key, GeoLocation location) {
+                System.out.println(String.format("Key %s moved within the search area to [%f,%f]", key, location.latitude, location.longitude));
+            }
+
+            @Override
+            public void onGeoQueryReady() {
+                System.out.println("All initial data has been loaded and events have been fired!");
+            }
+
+            @Override
+            public void onGeoQueryError(DatabaseError error) {
+                System.err.println("There was an error with this query: " + error);
+            }
+        });
+
     }
 
     /**
