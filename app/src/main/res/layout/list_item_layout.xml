@@ -24,12 +24,8 @@
         android:maxLines="4"
         android:text="The List item distance"
         android:textSize="14sp"
+        android:digits="2"
         android:textColor="@color/accent"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/listDistance"
-        android:text="blabla"/>
 
 </RelativeLayout>

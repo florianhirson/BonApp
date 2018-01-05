@@ -30,7 +30,7 @@ public class RestaurantAdapter extends ArrayAdapter<Restaurant>{
     public RestaurantAdapter(Context context, int resource, ArrayList<Restaurant> restaurantList) {
         super(context, resource);
         this.context = context;
-        this.restaurantList =restaurantList;
+        this.restaurantList = restaurantList;
     }
 
     @NonNull
@@ -43,7 +43,7 @@ public class RestaurantAdapter extends ArrayAdapter<Restaurant>{
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
 
         if(convertView == null) {
-            convertView = inflater.inflate(R.layout.list_item_layout, null);
+            convertView = inflater.inflate(R.layout.list_item_layout, parent, false);
         }
 
 
@@ -55,6 +55,11 @@ public class RestaurantAdapter extends ArrayAdapter<Restaurant>{
         Log.w("RestaurantAdapter", "inflating " + restaurant);
 
         return convertView;
+    }
+
+    @Override
+    public int getCount() {
+        return restaurantList.size();
     }
 
     @Override

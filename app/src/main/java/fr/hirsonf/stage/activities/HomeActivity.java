@@ -61,6 +61,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import net.cachapa.expandablelayout.ExpandableLayout;
+
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -75,6 +77,7 @@ public class HomeActivity extends AppCompatActivity  {
 
     @BindView(R.id.my_toolbar) Toolbar myToolbar;
     @BindView(R.id.search) Button search;
+    @BindView(R.id.toggle_expand) Button expand;
     @BindView(R.id.t_max_price) TextView maxPrice;
     @BindView(R.id.t_min_price) TextView minPrice;
     @BindView(R.id.rangebar) RangeBar rangebar;
@@ -82,6 +85,8 @@ public class HomeActivity extends AppCompatActivity  {
     @BindView(R.id.t_rayon) TextView rayon;
     @BindView(R.id.radiogroup_address_type) RadioGroup radioGroupAddressType;
     @BindView(R.id.listView) ListView listView;
+    @BindView(R.id.expandable_layout) ExpandableLayout expandableLayout;
+
 
     private static final String TAG = HomeActivity.class.getSimpleName();
 
@@ -181,6 +186,24 @@ public class HomeActivity extends AppCompatActivity  {
         initGoogleAPIClient();//Init Google API Client
         checkPermissions();//Check Permission
         list =new ArrayList<>();
+
+        expandableLayout.setOnExpansionUpdateListener(new ExpandableLayout.OnExpansionUpdateListener() {
+            @Override
+            public void onExpansionUpdate(float expansionFraction, int state) {
+                Log.d("ExpandableLayout", "State: " + state);
+            }
+        });
+
+        expand.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (expandableLayout.isExpanded()) {
+                    expandableLayout.collapse();
+                } else {
+                    expandableLayout.expand();
+                }
+            }
+        });
 
 
         if(savedInstanceState != null) {
@@ -659,6 +682,7 @@ public class HomeActivity extends AppCompatActivity  {
 
                 Log.w(TAG,"add" + r);
                 Log.w(TAG,"restaurant list : " + adapter.getRestaurantList());
+                Log.w(TAG,"list size : " + adapter.getCount());
 
             }
 

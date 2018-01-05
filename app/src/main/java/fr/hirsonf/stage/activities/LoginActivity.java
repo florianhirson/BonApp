@@ -184,6 +184,7 @@ public class LoginActivity extends AppCompatActivity
                 Log.w(TAG, "downloadingProfileData:failure", databaseError.toException());
                 Toast.makeText(LoginActivity.this, "Downloading profile data failed.",
                         Toast.LENGTH_SHORT).show();
+
             }
         });
 
