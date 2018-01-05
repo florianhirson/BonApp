@@ -1,14 +1,9 @@
 package stage.utils;
 
-import android.app.Activity;
-import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.util.Log;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -21,62 +16,42 @@ import stage.bo.Restaurant;
  * Created by flohi on 04/01/2018.
  */
 
-public class RestaurantAdapter extends ArrayAdapter<Restaurant>{
+public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.ViewHolder>{
 
-    private Context context;
     private List<Restaurant> restaurantList;
 
+    // Provide a reference to the views for each data item
+    // Complex data items may need more than one view per item, and
+    // you provide access to all the views for a data item in a view holder
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        // each data item is just a string in this case
+        public TextView name, distance;
+        public ViewHolder(View v) {
+            super(v);
+            name = (TextView) v.findViewById(R.id.listTitle);
+            distance = (TextView) v.findViewById(R.id.listDistance);
+        }
+    }
+
     //constructor, call on creation
-    public RestaurantAdapter(Context context, int resource, ArrayList<Restaurant> restaurantList) {
-        super(context, resource);
-        this.context = context;
+    public RestaurantAdapter(ArrayList<Restaurant> restaurantList) {
         this.restaurantList = restaurantList;
     }
 
-    @NonNull
+    // Create new views (invoked by the layout manager)
     @Override
-    public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        //get the property we are displaying
-        Restaurant restaurant = restaurantList.get(position);
+    public RestaurantAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
+                                                   int viewType) {
+        // create a new view
+        TextView v = (TextView) LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.list_item_layout, parent, false);
+        // set the view's size, margins, paddings and layout parameters
 
-        //get the inflater and inflate the XML layout for each item
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
-
-        if(convertView == null) {
-            convertView = inflater.inflate(R.layout.list_item_layout, parent, false);
-        }
-
-
-        TextView name = (TextView) convertView.findViewById(R.id.listTitle);
-        TextView distance = (TextView) convertView.findViewById(R.id.listDistance);
-
-        name.setText(restaurant.getName());
-        distance.setText("" + restaurant.getDistance());
-        Log.w("RestaurantAdapter", "inflating " + restaurant);
-
-        return convertView;
+        ViewHolder vh = new ViewHolder(v);
+        return vh;
     }
 
-    @Override
-    public int getCount() {
-        return restaurantList.size();
-    }
 
-    @Override
-    public void add(Restaurant object) {
-
-
-        restaurantList.add(object);
-        notifyDataSetChanged();
-    }
-
-    public Context getContext() {
-        return context;
-    }
-
-    public void setContext(Context context) {
-        this.context = context;
-    }
 
     public List<Restaurant> getRestaurantList() {
         return restaurantList;
@@ -84,5 +59,18 @@ public class RestaurantAdapter extends ArrayAdapter<Restaurant>{
 
     public void setRestaurantList(List<Restaurant> restaurantList) {
         this.restaurantList = restaurantList;
+    }
+
+
+    @Override
+    public void onBindViewHolder(RestaurantAdapter.ViewHolder holder, int position) {
+        Restaurant restaurant = restaurantList.get(position);
+        holder.name.setText(restaurant.getName());
+        holder.distance.setText(restaurant.getName());
+    }
+
+    @Override
+    public int getItemCount() {
+        return restaurantList.size();
     }
 }

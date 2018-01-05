@@ -19,6 +19,8 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -84,9 +86,10 @@ public class HomeActivity extends AppCompatActivity  {
     @BindView(R.id.seekbar) SeekBar seekBar;
     @BindView(R.id.t_rayon) TextView rayon;
     @BindView(R.id.radiogroup_address_type) RadioGroup radioGroupAddressType;
-    @BindView(R.id.listView) ListView listView;
     @BindView(R.id.expandable_layout) ExpandableLayout expandableLayout;
+    @BindView(R.id.recycler_view) RecyclerView recyclerView;
 
+    private RecyclerView.LayoutManager mLayoutManager;
 
     private static final String TAG = HomeActivity.class.getSimpleName();
 
@@ -187,6 +190,14 @@ public class HomeActivity extends AppCompatActivity  {
         checkPermissions();//Check Permission
         list =new ArrayList<>();
 
+        // use a linear layout manager
+        mLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(mLayoutManager);
+
+        // specify an adapter (see also next example)
+        adapter = new RestaurantAdapter(list);
+        recyclerView.setAdapter(adapter);
+
         expandableLayout.setOnExpansionUpdateListener(new ExpandableLayout.OnExpansionUpdateListener() {
             @Override
             public void onExpansionUpdate(float expansionFraction, int state) {
@@ -270,8 +281,6 @@ public class HomeActivity extends AppCompatActivity  {
             }
         });
 
-        adapter=new RestaurantAdapter(this,0,list);
-        listView.setAdapter(adapter);
 
         rangebar.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
             @Override
@@ -678,11 +687,11 @@ public class HomeActivity extends AppCompatActivity  {
                 double distance = location1.distanceTo(location2);
                 Restaurant r = new Restaurant(key, distance);
                 list.add(r);
-                adapter.notifyDataSetChanged();
+                adapter.notifyItemInserted(list.size() - 1);
 
                 Log.w(TAG,"add" + r);
                 Log.w(TAG,"restaurant list : " + adapter.getRestaurantList());
-                Log.w(TAG,"list size : " + adapter.getCount());
+                Log.w(TAG,"list size : " + adapter.getItemCount());
 
             }
 
