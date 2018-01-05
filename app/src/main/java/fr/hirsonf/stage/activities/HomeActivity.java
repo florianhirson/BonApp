@@ -66,7 +66,10 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -691,6 +694,7 @@ public class HomeActivity extends AppCompatActivity  {
                 location2.setLongitude(location.longitude);
 
                 double distance = location1.distanceTo(location2);
+                distance = round(distance, 2);
                 Restaurant r = new Restaurant(key, distance);
                 list.add(r);
                 adapter.notifyItemInserted(list.size() - 1);
@@ -779,6 +783,14 @@ public class HomeActivity extends AppCompatActivity  {
             }
         }
     };
+
+    public static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        BigDecimal bd = new BigDecimal(value);
+        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        return bd.doubleValue();
+    }
 
 
 }
