@@ -1,6 +1,7 @@
 package stage.utils;
 
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,9 +44,10 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
     public RestaurantAdapter.ViewHolder onCreateViewHolder(ViewGroup parent,
                                                    int viewType) {
         // create a new view
-        TextView v = (TextView) LayoutInflater.from(parent.getContext())
+        View v =  LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item_layout, parent, false);
         // set the view's size, margins, paddings and layout parameters
+        Log.w("RestaurantAdapter", "View created");
 
         ViewHolder vh = new ViewHolder(v);
         return vh;
@@ -66,7 +68,8 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
     public void onBindViewHolder(RestaurantAdapter.ViewHolder holder, int position) {
         Restaurant restaurant = restaurantList.get(position);
         holder.name.setText(restaurant.getName());
-        holder.distance.setText(restaurant.getName());
+        holder.distance.setText("" + restaurant.getDistance());
+        Log.w("RestaurantAdapter", "Data binded");
     }
 
     @Override

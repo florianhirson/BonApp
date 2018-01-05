@@ -19,6 +19,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -196,7 +197,11 @@ public class HomeActivity extends AppCompatActivity  {
 
         // specify an adapter (see also next example)
         adapter = new RestaurantAdapter(list);
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
+        recyclerView.setHasFixedSize(false);
 
         expandableLayout.setOnExpansionUpdateListener(new ExpandableLayout.OnExpansionUpdateListener() {
             @Override
@@ -670,6 +675,7 @@ public class HomeActivity extends AppCompatActivity  {
 
     private void doGeoQuery(final LatLng mLastKnownLocation) {
         list.clear();
+        adapter.notifyDataSetChanged();
         GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(mLastKnownLocation.latitude, mLastKnownLocation.longitude), range);
         geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
             @Override
@@ -688,6 +694,7 @@ public class HomeActivity extends AppCompatActivity  {
                 Restaurant r = new Restaurant(key, distance);
                 list.add(r);
                 adapter.notifyItemInserted(list.size() - 1);
+
 
                 Log.w(TAG,"add" + r);
                 Log.w(TAG,"restaurant list : " + adapter.getRestaurantList());

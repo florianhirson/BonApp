@@ -144,12 +144,6 @@
         android:layout_height="wrap_content"
         android:text="Filters" />
 
-    <ListView
-        android:id="@+id/listView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    </ListView>
 
     <!-- A RecyclerView with some commonly used attributes -->
     <android.support.v7.widget.RecyclerView
