@@ -196,7 +196,7 @@ public class HomeActivity extends AppCompatActivity  {
         recyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        adapter = new RestaurantAdapter(list);
+        adapter = new RestaurantAdapter(list, recyclerView);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
