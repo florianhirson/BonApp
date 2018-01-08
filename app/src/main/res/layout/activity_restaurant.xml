@@ -14,6 +14,26 @@
         android:theme="@style/TextAppearance.AppCompat.Title"
         />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <android.support.v7.widget.AppCompatButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Show on map"
+            />
+
+        <android.support.v7.widget.AppCompatButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Show itinary"
+            />
+    </LinearLayout>
+
     <ImageView
         android:id="@+id/restaurant_picture"
         android:contentDescription="Restaurant picture"
