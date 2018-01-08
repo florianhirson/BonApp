@@ -18,7 +18,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.Dark">
-
         <activity
             android:name=".activities.IntroActivity"
             android:label="Welcome !"
@@ -39,12 +38,10 @@
         <activity
             android:name=".activities.LoginActivity"
             android:label="Login"
-            android:windowSoftInputMode="stateHidden">
-
-        </activity>
+            android:windowSoftInputMode="stateHidden"></activity>
         <activity
             android:name=".activities.HomeActivity"
-            android:label="Home" >
+            android:label="Home">
             <intent-filter>
                 <action android:name="android.location.PROVIDERS_CHANGED" />
             </intent-filter>
@@ -59,22 +56,20 @@
         <activity
             android:name=".activities.EditPasswordActivity"
             android:windowSoftInputMode="stateHidden" />
-
         <activity
             android:name=".activities.MapsActivity"
-            android:theme="@style/AppTheme"
-            android:label="@string/title_activity_maps">
+            android:label="@string/title_activity_maps"
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.location.PROVIDERS_CHANGED" />
             </intent-filter>
-
         </activity>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDqqSFyspkp3tqxfG-HW8e2iLspMxe5HV8"/>
+            android:value="AIzaSyDqqSFyspkp3tqxfG-HW8e2iLspMxe5HV8" />
 
-
+        <activity android:name=".activities.RestaurantActivity"></activity>
     </application>
 
 </manifest>
