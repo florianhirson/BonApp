@@ -3,7 +3,8 @@
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="8dp">
 
     <TextView
         android:layout_width="match_parent"
@@ -46,13 +47,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/average-price"
+        android:textSize="16sp"
+        android:textStyle="bold"
         android:text="Average price : "
         />
+
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/distance"
+        android:textSize="16sp"
+        android:textStyle="bold"
         android:text="Distance : "
         />
 
@@ -60,11 +66,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/waiting_time"
+        android:textSize="16sp"
+        android:textStyle="bold"
         android:text="Average waiting time : "/>
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:paddingTop="16dp"
+        android:textStyle="bold"
         android:text="Menu : "/>
 
     <!-- A RecyclerView with some commonly used attributes -->
