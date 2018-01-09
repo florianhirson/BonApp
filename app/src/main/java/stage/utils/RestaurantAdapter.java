@@ -29,6 +29,7 @@ import stage.bo.Restaurant;
 
 public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.ViewHolder>{
     private static final int UNSELECTED = -1;
+    private List<Integer> distanceList;
     private List<Restaurant> restaurantList;
     private List<String> idList;
     private static int selectedItem = UNSELECTED;
@@ -38,11 +39,12 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
 
 
     //constructor, call on creation
-    public RestaurantAdapter(ArrayList<Restaurant> restaurantList, RecyclerView recyclerView, Context context, ArrayList<String> idList) {
+    public RestaurantAdapter(ArrayList<Restaurant> restaurantList, RecyclerView recyclerView, Context context, ArrayList<String> idList, List<Integer> distanceList) {
         this.restaurantList = restaurantList;
         this.idList = idList;
         this.recyclerView = recyclerView;
         this.context = context;
+        this.distanceList = distanceList;
     }
 
     // Create new views (invoked by the layout manager)
@@ -62,8 +64,9 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
     @Override
     public void onBindViewHolder(RestaurantAdapter.ViewHolder holder, int position) {
         Restaurant restaurant = restaurantList.get(position);
+        int distance = distanceList.get(position);
         holder.name.setText(restaurant.getName());
-        holder.distance.setText(restaurant.getDistance() + " m");
+        holder.distance.setText(distance + " m");
         Log.w("RestaurantAdapter", "Data binded");
 
         holder.bind();

@@ -9,7 +9,6 @@ import java.util.ArrayList;
 public class Restaurant {
 
     private int waitingTime;
-    private double distance;
     private double averagePrice;
     private String name;
     private String description;
@@ -18,15 +17,12 @@ public class Restaurant {
 
 
 
-    public Restaurant(String name, double distance) {
+    public Restaurant(String name) {
         this.name = name;
-
-        this.distance = distance;
     }
 
-    public Restaurant(int waitingTime, double distance, double averagePrice, String name, String description, String picture, ArrayList<Menu> restaurantMenus) {
+    public Restaurant(int waitingTime,  double averagePrice, String name, String description, String picture, ArrayList<Menu> restaurantMenus) {
         this.waitingTime = waitingTime;
-        this.distance = distance;
         this.averagePrice = averagePrice;
         this.name = name;
         this.description = description;
@@ -48,14 +44,6 @@ public class Restaurant {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public double getDistance() {
-        return distance;
-    }
-
-    public void setDistance(double distance) {
-        this.distance = distance;
     }
 
     public int getWaitingTime() {
@@ -92,6 +80,6 @@ public class Restaurant {
 
     @Override
     public String toString() {
-        return "Restaurant : " + this.getName() + ", distance to position : " + this.getDistance();
+        return "Restaurant : " + this.getName();
     }
 }

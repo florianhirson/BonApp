@@ -107,6 +107,7 @@ public class HomeActivity extends AppCompatActivity  {
 
     ArrayList<Restaurant> restaurantlist;
     ArrayList<String> idList;
+    ArrayList<Integer> distanceList;
     private RestaurantAdapter adapter;
 
     // The entry point to the Fused Location Provider.
@@ -195,13 +196,14 @@ public class HomeActivity extends AppCompatActivity  {
         checkPermissions();//Check Permission
         restaurantlist =new ArrayList<>();
         idList = new ArrayList<>();
+        distanceList = new ArrayList<>();
 
         // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        adapter = new RestaurantAdapter(restaurantlist, recyclerView, this, idList);
+        adapter = new RestaurantAdapter(restaurantlist, recyclerView, this, idList, distanceList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -680,6 +682,7 @@ public class HomeActivity extends AppCompatActivity  {
 
     private void doGeoQuery(final LatLng mLastKnownLocation) {
         idList.clear();
+        distanceList.clear();
         restaurantlist.clear();
         adapter.notifyDataSetChanged();
         GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(mLastKnownLocation.latitude, mLastKnownLocation.longitude), range);
@@ -696,11 +699,12 @@ public class HomeActivity extends AppCompatActivity  {
                 location2.setLatitude(location.latitude);
                 location2.setLongitude(location.longitude);
 
-                double distance = location1.distanceTo(location2);
-                distance = round(distance, 2);
-                Restaurant r = new Restaurant(key, distance);
+                int distance = (int) location1.distanceTo(location2);
+                distanceList.add(distance);
+                Restaurant r = new Restaurant(key);
                 restaurantlist.add(r);
                 idList.add(key);
+
                 adapter.notifyItemInserted(restaurantlist.size() - 1);
 
 
