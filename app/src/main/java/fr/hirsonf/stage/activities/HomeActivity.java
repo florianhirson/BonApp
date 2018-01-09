@@ -105,7 +105,8 @@ public class HomeActivity extends AppCompatActivity  {
     private int maxValue;
     private Place selectedPlace;
 
-    ArrayList<Restaurant> list;
+    ArrayList<Restaurant> restaurantlist;
+    ArrayList<String> idList;
     private RestaurantAdapter adapter;
 
     // The entry point to the Fused Location Provider.
@@ -192,14 +193,15 @@ public class HomeActivity extends AppCompatActivity  {
         registerReceiver(gpsReceiver, new IntentFilter(LocationManager.PROVIDERS_CHANGED_ACTION));
         initGoogleAPIClient();//Init Google API Client
         checkPermissions();//Check Permission
-        list =new ArrayList<>();
+        restaurantlist =new ArrayList<>();
+        idList = new ArrayList<>();
 
         // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        adapter = new RestaurantAdapter(list, recyclerView);
+        adapter = new RestaurantAdapter(restaurantlist, recyclerView, this, idList);
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -677,7 +679,8 @@ public class HomeActivity extends AppCompatActivity  {
     }
 
     private void doGeoQuery(final LatLng mLastKnownLocation) {
-        list.clear();
+        idList.clear();
+        restaurantlist.clear();
         adapter.notifyDataSetChanged();
         GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(mLastKnownLocation.latitude, mLastKnownLocation.longitude), range);
         geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
@@ -696,8 +699,9 @@ public class HomeActivity extends AppCompatActivity  {
                 double distance = location1.distanceTo(location2);
                 distance = round(distance, 2);
                 Restaurant r = new Restaurant(key, distance);
-                list.add(r);
-                adapter.notifyItemInserted(list.size() - 1);
+                restaurantlist.add(r);
+                idList.add(key);
+                adapter.notifyItemInserted(restaurantlist.size() - 1);
 
 
                 Log.w(TAG,"add" + r);

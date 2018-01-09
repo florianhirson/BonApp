@@ -1,13 +1,18 @@
 package stage.utils;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
 
@@ -15,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.hirsonf.stage.R;
+import fr.hirsonf.stage.activities.RestaurantActivity;
 import stage.bo.Restaurant;
 
 /**
@@ -24,14 +30,19 @@ import stage.bo.Restaurant;
 public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.ViewHolder>{
     private static final int UNSELECTED = -1;
     private List<Restaurant> restaurantList;
+    private List<String> idList;
     private static int selectedItem = UNSELECTED;
     private RecyclerView recyclerView;
+    private Context context;
+
 
 
     //constructor, call on creation
-    public RestaurantAdapter(ArrayList<Restaurant> restaurantList, RecyclerView recyclerView) {
+    public RestaurantAdapter(ArrayList<Restaurant> restaurantList, RecyclerView recyclerView, Context context, ArrayList<String> idList) {
         this.restaurantList = restaurantList;
+        this.idList = idList;
         this.recyclerView = recyclerView;
+        this.context = context;
     }
 
     // Create new views (invoked by the layout manager)
@@ -52,7 +63,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
     public void onBindViewHolder(RestaurantAdapter.ViewHolder holder, int position) {
         Restaurant restaurant = restaurantList.get(position);
         holder.name.setText(restaurant.getName());
-        holder.distance.setText("" + restaurant.getDistance());
+        holder.distance.setText(restaurant.getDistance() + " m");
         Log.w("RestaurantAdapter", "Data binded");
 
         holder.bind();
@@ -78,37 +89,55 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
         // each data item is just a string in this case
 
         private TextView name, distance;
+        private Button details;
         private ExpandableLayout expandableLayout;
-        private RelativeLayout relativeLayout;
+        private LinearLayout layoutTextView;
+        private ViewHolder holder;
 
 
-        public ViewHolder(View v) {
+
+        private ViewHolder(View v) {
             super(v);
             name = (TextView) v.findViewById(R.id.listTitle);
             distance = (TextView) v.findViewById(R.id.listDistance);
             expandableLayout = v.findViewById(R.id.expandable_layout);
-            relativeLayout = v.findViewById(R.id.relative_layout);
+            layoutTextView = v.findViewById(R.id.layoutTextView);
+            details = (Button) v.findViewById(R.id.details);
             expandableLayout.setInterpolator(new OvershootInterpolator());
             expandableLayout.setOnExpansionUpdateListener(this);
-            relativeLayout.setOnClickListener(this);
+            layoutTextView.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View v) {
+            final int position = getAdapterPosition();
             Log.w("RestaurantAdapter", "View clicked");
-            ViewHolder holder = (ViewHolder) recyclerView.findViewHolderForAdapterPosition(selectedItem);
-            if (holder != null) {
-                relativeLayout.setSelected(false);
+            final ViewHolder holder = (ViewHolder) recyclerView.findViewHolderForAdapterPosition(selectedItem);
+
+            if(holder != null) {
+                holder.layoutTextView.setSelected(false);
                 holder.expandableLayout.collapse();
             }
 
-            int position = getAdapterPosition();
+
+
             if (position == selectedItem) {
                 selectedItem = UNSELECTED;
+
             } else {
-                relativeLayout.setSelected(true);
+                layoutTextView.setSelected(true);
                 expandableLayout.expand();
                 selectedItem = position;
+                details.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent i = new Intent(context, RestaurantActivity.class);
+                        String message = "Id : " + idList.get(position) + " clicked";
+                        Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
+                        layoutTextView.setSelected(false);
+                        expandableLayout.collapse();
+                    }
+                });
             }
         }
 
@@ -122,11 +151,11 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
             }
         }
 
-        public void bind() {
+        private void bind() {
             int position = getAdapterPosition();
             boolean isSelected = position == selectedItem;
 
-            relativeLayout.setSelected(isSelected);
+            layoutTextView.setSelected(isSelected);
             expandableLayout.setExpanded(isSelected, false);
         }
 
