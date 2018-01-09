@@ -692,6 +692,7 @@ public class HomeActivity extends AppCompatActivity  {
         geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
             @Override
             public void onKeyEntered(String key, GeoLocation location) {
+                Log.d(TAG,"Range : " + range);
                 System.out.println(String.format("Key %s entered the search area at [%f,%f]", key, location.latitude, location.longitude));
 
                 Location location1 = new Location("");
@@ -737,8 +738,27 @@ public class HomeActivity extends AppCompatActivity  {
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                restaurantName = dataSnapshot.toString();
-                Restaurant r = new Restaurant(restaurantName);
+                if(dataSnapshot != null ) {
+                    restaurantName = dataSnapshot.getValue().toString();
+                    Restaurant r = new Restaurant(restaurantName);
+                    restaurantlist.add(r);
+                    idList.add(id);
+
+                    adapter.notifyItemInserted(restaurantlist.size() - 1);
+
+
+                    Log.w(TAG,"add" + r);
+                    Log.w(TAG,"restaurant list : " + adapter.getRestaurantList());
+                    Log.w(TAG,"list size : " + adapter.getItemCount());
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w(TAG, "downloadingRestaurantName:failure", databaseError.toException());
+                Toast.makeText(HomeActivity.this, "Downloading restaurant name failed.",
+                        Toast.LENGTH_SHORT).show();
+                Restaurant r = new Restaurant(id);
                 restaurantlist.add(r);
                 idList.add(id);
 
@@ -748,13 +768,6 @@ public class HomeActivity extends AppCompatActivity  {
                 Log.w(TAG,"add" + r);
                 Log.w(TAG,"restaurant list : " + adapter.getRestaurantList());
                 Log.w(TAG,"list size : " + adapter.getItemCount());
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.w(TAG, "downloadingRestaurantName:failure", databaseError.toException());
-                Toast.makeText(HomeActivity.this, "Downloading restaurant name failed.",
-                        Toast.LENGTH_SHORT).show();
             }
         });
     }
