@@ -60,9 +60,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
 
@@ -104,6 +106,7 @@ public class HomeActivity extends AppCompatActivity  {
     private int minValue;
     private int maxValue;
     private Place selectedPlace;
+    private String restaurantName;
 
     ArrayList<Restaurant> restaurantlist;
     ArrayList<String> idList;
@@ -701,17 +704,7 @@ public class HomeActivity extends AppCompatActivity  {
 
                 int distance = (int) location1.distanceTo(location2);
                 distanceList.add(distance);
-                Restaurant r = new Restaurant(key);
-                restaurantlist.add(r);
-                idList.add(key);
-
-                adapter.notifyItemInserted(restaurantlist.size() - 1);
-
-
-                Log.w(TAG,"add" + r);
-                Log.w(TAG,"restaurant list : " + adapter.getRestaurantList());
-                Log.w(TAG,"list size : " + adapter.getItemCount());
-
+                getRestaurantName(key);
             }
 
             @Override
@@ -734,7 +727,36 @@ public class HomeActivity extends AppCompatActivity  {
                 System.err.println("There was an error with this query: " + error);
             }
         });
+    }
 
+    private void getRestaurantName(final String id) {
+        DatabaseReference ref = FirebaseDatabase.getInstance()
+                .getReference("restaurants")
+                .child(id)
+                .child("name");
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                restaurantName = dataSnapshot.toString();
+                Restaurant r = new Restaurant(restaurantName);
+                restaurantlist.add(r);
+                idList.add(id);
+
+                adapter.notifyItemInserted(restaurantlist.size() - 1);
+
+
+                Log.w(TAG,"add" + r);
+                Log.w(TAG,"restaurant list : " + adapter.getRestaurantList());
+                Log.w(TAG,"list size : " + adapter.getItemCount());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.w(TAG, "downloadingRestaurantName:failure", databaseError.toException());
+                Toast.makeText(HomeActivity.this, "Downloading restaurant name failed.",
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     /**
