@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:layout_width="match_parent"
+<LinearLayout
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -12,7 +13,7 @@
         android:id="@+id/restaurant_name"
         android:text="Restaurant name"
         android:gravity="center_horizontal"
-        android:theme="@style/TextAppearance.AppCompat.Title"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
         />
 
     <LinearLayout
@@ -42,7 +43,6 @@
         android:contentDescription="Restaurant picture"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:padding="8dp"
         app:srcCompat="@color/accent" />
 
     <TextView

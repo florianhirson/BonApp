@@ -1,6 +1,7 @@
 package stage.bo;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by flohi on 04/01/2018.
@@ -13,15 +14,16 @@ public class Restaurant {
     private String name;
     private String description;
     private String picture;
-    private ArrayList<Menu> restaurantMenus;
+    private HashMap<String,Menu> restaurantMenus;
 
-
+    public Restaurant() {
+    }
 
     public Restaurant(String name) {
         this.name = name;
     }
 
-    public Restaurant(int waitingTime,  double averagePrice, String name, String description, String picture, ArrayList<Menu> restaurantMenus) {
+    public Restaurant(int waitingTime,  double averagePrice, String name, String description, String picture, HashMap<String,Menu> restaurantMenus) {
         this.waitingTime = waitingTime;
         this.averagePrice = averagePrice;
         this.name = name;
@@ -30,11 +32,11 @@ public class Restaurant {
         this.restaurantMenus = restaurantMenus;
     }
 
-    public ArrayList<Menu> getRestaurantMenus() {
+    public HashMap<String,Menu> getRestaurantMenus() {
         return restaurantMenus;
     }
 
-    public void setRestaurantMenus(ArrayList<Menu> restaurantMenus) {
+    public void setRestaurantMenus(HashMap<String,Menu> restaurantMenus) {
         this.restaurantMenus = restaurantMenus;
     }
 
@@ -80,6 +82,10 @@ public class Restaurant {
 
     @Override
     public String toString() {
-        return "Restaurant : " + this.getName();
+        return "Restaurant : " + this.getName()
+                + "\nwaiting time : " + waitingTime
+                + "\naverage price : " + averagePrice
+                + "\ndescription : " + description
+                + "\nmenus" + restaurantMenus;
     }
 }

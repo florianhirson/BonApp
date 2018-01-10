@@ -11,6 +11,9 @@ public class Menu {
     private double price;
     private int time;
 
+    public Menu() {
+    }
+
     public Menu(String description, String name, String picture, double price, int time) {
         this.description = description;
         this.name = name;
@@ -57,5 +60,10 @@ public class Menu {
 
     public void setTime(int time) {
         this.time = time;
+    }
+
+    @Override
+    public String toString() {
+        return "\n menu's name : " + name + ", description : " + description + ", price : " + price + ", waiting time : " + time;
     }
 }
