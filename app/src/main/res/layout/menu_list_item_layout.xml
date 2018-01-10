@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="8dp">
+
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/menuPicture"
+        app:srcCompat="@color/accent"
+        android:contentDescription="Menu picture"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/menuPicture"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/menuName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="The Menu name"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/accent"/>
+
+        <TextView
+            android:id="@+id/menuDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:maxLines="4"
+            android:text="The Menu description"
+            android:textSize="14sp"
+            android:textColor="@color/accent"/>
+
+        <TextView
+            android:id="@+id/menuPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:maxLines="4"
+            android:text="The Menu price"
+            android:textSize="14sp"
+            android:textColor="@color/accent"/>
+
+        <TextView
+            android:id="@+id/menuTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:maxLines="4"
+            android:text="The Menu average waiting time"
+            android:textSize="14sp"
+            android:textColor="@color/accent"/>
+
+
+
+    </LinearLayout>
+
+
+</RelativeLayout>

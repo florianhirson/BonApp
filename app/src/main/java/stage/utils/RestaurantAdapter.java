@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,7 +52,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
                                                            int viewType) {
         // create a new view
         View v =  LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_item_layout, parent, false);
+                .inflate(R.layout.restaurant_list_item_layout, parent, false);
         // set the view's size, margins, paddings and layout parameters
         Log.w("RestaurantAdapter", "View created");
 
@@ -139,6 +138,10 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
                         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
                         layoutTextView.setSelected(false);
                         expandableLayout.collapse();
+                        i.putExtra("id", idList.get(position));
+                        i.putExtra("name", restaurantList.get(position).getName());
+                        i.putExtra("distance", distanceList.get(position));
+                        context.startActivity(i);
                     }
                 });
             }
