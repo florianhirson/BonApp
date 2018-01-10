@@ -56,14 +56,15 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
         holder.menuDescription.setText(menu.getDescription());
         holder.menuPrice.setText("Price : " + menu.getPrice() + " £");
         holder.menuTime.setText("Waiting time : " + menu.getTime() + " min");
-        holder.profilePicturesRef
-                .child("restaurantResources")
+        StorageReference storageReference = FirebaseStorage
+                .getInstance()
+                .getReference("restaurantResources")
                 .child(restaurantId)
                 .child(menuIdsList.get(position))
-                .child("photo");
+                .child("photo.jpg");
 
         GlideApp.with(context)
-                .load(holder.profilePicturesRef)
+                .load(storageReference)
                 .centerCrop()
                 .error(R.color.accent)
                 .into(holder.menuPicture);
@@ -117,8 +118,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
 
         private TextView menuName, menuDescription, menuPrice, menuTime;
         private ImageView menuPicture;
-        private RestaurantAdapter.ViewHolder holder;
-        private StorageReference profilePicturesRef;
+
 
         private ViewHolder(View v) {
             super(v);
@@ -127,7 +127,6 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
             menuPrice = (TextView) v.findViewById(R.id.menuPrice);
             menuTime = (TextView) v.findViewById(R.id.menuTime);
             menuPicture = (ImageView) v.findViewById(R.id.menuPicture);
-            profilePicturesRef = FirebaseStorage.getInstance().getReference();
         }
 
     }

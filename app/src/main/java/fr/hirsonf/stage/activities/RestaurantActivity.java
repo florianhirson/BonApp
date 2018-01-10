@@ -16,6 +16,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,6 +28,7 @@ import butterknife.ButterKnife;
 import fr.hirsonf.stage.R;
 import stage.bo.Menu;
 import stage.bo.Restaurant;
+import stage.utils.GlideApp;
 import stage.utils.MenuAdapter;
 import stage.utils.RestaurantAdapter;
 
@@ -87,6 +90,18 @@ public class RestaurantActivity extends AppCompatActivity {
                     .getInstance()
                     .getReference("restaurants")
                     .child(id);
+
+            StorageReference storageReference = FirebaseStorage
+                    .getInstance()
+                    .getReference("restaurantResources")
+                    .child(id)
+                    .child("photo.jpg");
+
+            GlideApp.with(this)
+                    .load(storageReference)
+                    .centerCrop()
+                    .error(R.color.accent)
+                    .into(restaurantPicture);
 
             Log.d(TAG, "restaurant's id : " + id);
 
