@@ -84,6 +84,7 @@ public class MapsActivity extends AppCompatActivity
     private static final String TAG = MapsActivity.class.getSimpleName();
     private static final int REQUEST_CHECK_SETTINGS = 0x1;
     private GoogleMap mMap;
+
     private CameraPosition mCameraPosition;
     private LocationManager locationManager;
 
@@ -102,7 +103,8 @@ public class MapsActivity extends AppCompatActivity
     private final LatLng mDefaultLocation = new LatLng(55.865593, -4.252657);
     private static final int DEFAULT_ZOOM = 15;
     private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
-    private int range;
+    private LatLng coord;
+    private String restaurantName;
     private boolean mLocationPermissionGranted;
 
     // The geographical location where the device is currently located. That is, the last-known
@@ -135,7 +137,8 @@ public class MapsActivity extends AppCompatActivity
 
         if(b!=null)
         {
-            range = (int) b.get("range");
+            restaurantName = (String) b.get("restaurantName");
+            coord = (LatLng) b.get("coord");
         }
 
         // Retrieve location and camera position from saved instance state.
@@ -344,25 +347,12 @@ public class MapsActivity extends AppCompatActivity
                             // Set the map's camera position to the current location of the device.
                             mLastKnownLocation = task.getResult();
                             if(mLastKnownLocation != null) {
+                                mMap.addMarker(new MarkerOptions()
+                                        .position(coord)
+                                        .title(restaurantName));
+
                                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(
-                                        new LatLng(mLastKnownLocation.getLatitude(),
-                                                mLastKnownLocation.getLongitude()), DEFAULT_ZOOM));
-
-                                geoFire.setLocation("test", new GeoLocation(mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude()), new GeoFire.CompletionListener() {
-                                    @Override
-                                    public void onComplete(String key, DatabaseError error) {
-                                        if (error != null) {
-                                            System.err.println("There was an error saving the location to GeoFire: " + error);
-                                        } else {
-                                            System.out.println("Location saved on server successfully!");
-                                        }
-                                    }
-                                });
-
-                                doGeoQuery(mLastKnownLocation);
-
-
-
+                                        coord, DEFAULT_ZOOM));
                             }
                         } else {
                             Log.d(TAG, "Current location is null. Using defaults.");
@@ -381,39 +371,7 @@ public class MapsActivity extends AppCompatActivity
         }
     }
 
-    private void doGeoQuery(Location mLastKnownLocation) {
-        GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude()), range);
-        geoQuery.addGeoQueryEventListener(new GeoQueryEventListener() {
-            @Override
-            public void onKeyEntered(String key, GeoLocation location) {
-                System.out.println(String.format("Key %s entered the search area at [%f,%f]", key, location.latitude, location.longitude));
-                LatLng loc = new LatLng(location.latitude, location.longitude);
-                mMap.addMarker(new MarkerOptions().position(loc)
-                        .title(key));
-            }
 
-            @Override
-            public void onKeyExited(String key) {
-                System.out.println(String.format("Key %s is no longer in the search area", key));
-            }
-
-            @Override
-            public void onKeyMoved(String key, GeoLocation location) {
-                System.out.println(String.format("Key %s moved within the search area to [%f,%f]", key, location.latitude, location.longitude));
-            }
-
-            @Override
-            public void onGeoQueryReady() {
-                System.out.println("All initial data has been loaded and events have been fired!");
-            }
-
-            @Override
-            public void onGeoQueryError(DatabaseError error) {
-                System.err.println("There was an error with this query: " + error);
-            }
-        });
-
-    }
 
     /**
      * Prompts the user for permission to use the device location.

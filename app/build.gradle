@@ -81,7 +81,13 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.1.1'
 
     //expandable layout
-    compile 'net.cachapa.expandablelayout:expandablelayout:[2.9.2]'
+    compile 'net.cachapa.expandablelayout:expandablelayout:2.9.2'
+
+    //Carteasy
+    compile 'com.carteasy.v1.lib:carteasy:0.0.1'
+
+    //Material number picker
+    compile 'biz.kasual:materialnumberpicker:1.2.1'
 
     androidTestCompile 'junit:junit:4.12'
 }

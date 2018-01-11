@@ -30,7 +30,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.RadioGroup;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -72,7 +71,6 @@ import net.cachapa.expandablelayout.ExpandableLayout;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DateFormat;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -80,7 +78,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import fr.hirsonf.stage.R;
 import stage.bo.Restaurant;
-import stage.utils.RestaurantAdapter;
+import stage.adapters.RestaurantAdapter;
 
 public class HomeActivity extends AppCompatActivity  {
 
@@ -112,6 +110,7 @@ public class HomeActivity extends AppCompatActivity  {
     ArrayList<Restaurant> restaurantlist;
     ArrayList<String> idList;
     ArrayList<Integer> distanceList;
+    ArrayList<LatLng> coordList;
     private RestaurantAdapter adapter;
 
     // The entry point to the Fused Location Provider.
@@ -201,13 +200,14 @@ public class HomeActivity extends AppCompatActivity  {
         restaurantlist =new ArrayList<>();
         idList = new ArrayList<>();
         distanceList = new ArrayList<>();
+        coordList = new ArrayList<>();
 
         // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(mLayoutManager);
 
         // specify an adapter (see also next example)
-        adapter = new RestaurantAdapter(restaurantlist, recyclerView, this, idList, distanceList);
+        adapter = new RestaurantAdapter(restaurantlist, recyclerView, this, idList, distanceList, coordList);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
         recyclerView.setHasFixedSize(false);
@@ -686,6 +686,7 @@ public class HomeActivity extends AppCompatActivity  {
     private void doGeoQuery(final LatLng mLastKnownLocation) {
         idList.clear();
         distanceList.clear();
+        coordList.clear();
         restaurantlist.clear();
         adapter.notifyDataSetChanged();
         GeoQuery geoQuery = geoFire.queryAtLocation(new GeoLocation(mLastKnownLocation.latitude, mLastKnownLocation.longitude), range);
@@ -705,6 +706,7 @@ public class HomeActivity extends AppCompatActivity  {
 
                 int distance = (int) location1.distanceTo(location2);
                 distanceList.add(distance);
+                coordList.add(new LatLng(location.latitude, location.longitude));
                 getRestaurantName(key);
             }
 

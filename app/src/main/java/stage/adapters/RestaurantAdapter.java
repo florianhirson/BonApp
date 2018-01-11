@@ -1,4 +1,4 @@
-package stage.utils;
+package stage.adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.maps.model.LatLng;
 
 import net.cachapa.expandablelayout.ExpandableLayout;
 
@@ -30,20 +32,20 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
     private static final int UNSELECTED = -1;
     private List<Integer> distanceList;
     private List<Restaurant> restaurantList;
+    private List<LatLng> coordList;
     private List<String> idList;
     private static int selectedItem = UNSELECTED;
     private RecyclerView recyclerView;
     private Context context;
 
-
-
     //constructor, call on creation
-    public RestaurantAdapter(ArrayList<Restaurant> restaurantList, RecyclerView recyclerView, Context context, ArrayList<String> idList, List<Integer> distanceList) {
+    public RestaurantAdapter(ArrayList<Restaurant> restaurantList, RecyclerView recyclerView, Context context, ArrayList<String> idList, List<Integer> distanceList, List<LatLng> coordList) {
         this.restaurantList = restaurantList;
         this.idList = idList;
         this.recyclerView = recyclerView;
         this.context = context;
         this.distanceList = distanceList;
+        this.coordList = coordList;
     }
 
     // Create new views (invoked by the layout manager)
@@ -141,6 +143,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
                         i.putExtra("id", idList.get(position));
                         i.putExtra("name", restaurantList.get(position).getName());
                         i.putExtra("distance", distanceList.get(position));
+                        i.putExtra("coord", coordList.get(position));
                         context.startActivity(i);
                     }
                 });

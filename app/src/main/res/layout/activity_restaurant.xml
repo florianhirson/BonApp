@@ -7,14 +7,33 @@
     android:orientation="vertical"
     android:padding="8dp">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/restaurant_name"
-        android:text="Restaurant name"
-        android:gravity="center_horizontal"
-        android:textAppearance="@style/TextAppearance.AppCompat.Title"
-        />
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/restaurant_name"
+            android:layout_weight="5"
+            android:text="Restaurant name"
+            android:gravity="center_horizontal"
+            android:textAppearance="@style/TextAppearance.AppCompat.Title"
+            />
+
+        <ImageButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/go_to_cart"
+            android:layout_weight="1"
+            android:padding="0dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="Go to cart"
+            android:src="@drawable/ic_shopping_cart"/>
+
+    </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -34,7 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:id="@+id/show_itinary"
-            android:text="Show itinary"
+            android:text="Show itinerary"
             />
     </LinearLayout>
 

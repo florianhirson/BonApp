@@ -73,12 +73,18 @@
 
 
         </LinearLayout>
-        <Button
+        <biz.kasual.materialnumberpicker.MaterialNumberPicker
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:id="@+id/add_to_cart"
-            android:text="+" />
+            android:layout_height="100dp"
+            app:npMinValue="1"
+            app:npMaxValue="50"
+            app:npDefaultValue="10"
+            app:npBackgroundColor="@color/primary"
+            app:npSeparatorColor="@color/accent"
+            app:npTextColor="@color/accent"
+            app:npTextSize="20sp"/>
     </LinearLayout>
+
 
 
 

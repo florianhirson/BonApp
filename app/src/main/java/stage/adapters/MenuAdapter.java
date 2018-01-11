@@ -1,4 +1,4 @@
-package stage.utils;
+package stage.adapters;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -6,17 +6,22 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.carteasy.v1.lib.Carteasy;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.List;
 
 import fr.hirsonf.stage.R;
 import stage.bo.Menu;
+import stage.utils.GlideApp;
 
 /**
  * Created by flohi on 10/01/2018.
@@ -27,8 +32,6 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
     private Context context;
     private List<String> menuIdsList;
     private String restaurantId;
-
-
 
     public MenuAdapter(HashMap<String,Menu> menuList, Context context, List<String> menuIdsList, String restaurantId) {
         this.menuList = menuList;
@@ -49,9 +52,9 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(MenuAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(MenuAdapter.ViewHolder holder, final int position) {
         String key = (String) menuList.keySet().toArray()[position];
-        Menu menu = menuList.get(key);
+        final Menu menu = menuList.get(key);
         holder.menuName.setText(menu.getName());
         holder.menuDescription.setText(menu.getDescription());
         holder.menuPrice.setText("Price : " + menu.getPrice() + " £");
@@ -70,6 +73,26 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
                 .into(holder.menuPicture);
 
         Log.w("MenuAdapter", "Data binded");
+        holder.addToCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Carteasy cs = new Carteasy();
+                cs.add(menuIdsList.get(position), "name", menu.getName());
+                cs.add(menuIdsList.get(position), "description", menu.getDescription());
+                cs.add(menuIdsList.get(position), "price", menu.getPrice());
+                cs.add(menuIdsList.get(position), "picture", menu.getPicture());
+
+                String id = menuIdsList.get(position);
+                int quantity = cs.getInteger(id, "quantity", context.getApplicationContext());
+                ++quantity;
+                Log.d("Menu Adapter", "Quantity : " + quantity);
+                cs.update(menuIdsList.get(position), "quantity", quantity, context.getApplicationContext());
+
+                cs.commit(context.getApplicationContext());
+                Log.d("Menu Adapter", "Changes to cart saved");
+
+            }
+        });
     }
 
     @Override
@@ -118,6 +141,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
 
         private TextView menuName, menuDescription, menuPrice, menuTime;
         private ImageView menuPicture;
+        private Button addToCart;
 
 
         private ViewHolder(View v) {
@@ -127,6 +151,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
             menuPrice = (TextView) v.findViewById(R.id.menuPrice);
             menuTime = (TextView) v.findViewById(R.id.menuTime);
             menuPicture = (ImageView) v.findViewById(R.id.menuPicture);
+            addToCart = (Button) v.findViewById(R.id.add_to_cart);
         }
 
     }

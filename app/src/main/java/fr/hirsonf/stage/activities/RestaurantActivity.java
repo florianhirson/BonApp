@@ -1,6 +1,8 @@
 package fr.hirsonf.stage.activities;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -8,10 +10,15 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.carteasy.v1.lib.Carteasy;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,11 +37,11 @@ import fr.hirsonf.stage.R;
 import stage.bo.Menu;
 import stage.bo.Restaurant;
 import stage.utils.GlideApp;
-import stage.utils.MenuAdapter;
-import stage.utils.RestaurantAdapter;
+import stage.adapters.MenuAdapter;
 
 public class RestaurantActivity extends AppCompatActivity {
 
+    private LatLng coord;
     private int distance;
     private String id;
     private String name;
@@ -55,6 +62,7 @@ public class RestaurantActivity extends AppCompatActivity {
     @BindView(R.id.show_itinary) Button showItinary;
     @BindView(R.id.restaurant_picture) ImageView restaurantPicture;
     @BindView(R.id.recycler_view) RecyclerView recyclerView;
+    @BindView(R.id.go_to_cart) ImageButton goToCart;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,13 +76,20 @@ public class RestaurantActivity extends AppCompatActivity {
         menuHashMap = new HashMap<>();
         menuIdsList = new ArrayList<>();
 
-
+        goToCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(RestaurantActivity.this, CartActivity.class);
+                startActivity(i);
+            }
+        });
 
         if(b!=null)
         {
             distance =(int) b.get("distance");
             id = (String) b.get("id");
             name = (String) b.get("name");
+            coord = (LatLng) b.get("coord");
 
             // use a linear layout manager
             mLayoutManager = new LinearLayoutManager(this);
@@ -108,7 +123,6 @@ public class RestaurantActivity extends AppCompatActivity {
             Log.d(TAG, "restaurant's id : " + id);
 
             databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     restaurant = dataSnapshot.getValue(Restaurant.class);
@@ -124,14 +138,47 @@ public class RestaurantActivity extends AppCompatActivity {
                         // In your case, another loop.
                     }
                     adapter.notifyDataSetChanged();
-
-
-
                 }
 
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
                     Log.e(TAG, "Download restaurant's data : failure " + databaseError.toException());
+                }
+            });
+
+            showOnMap.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent i = new Intent(RestaurantActivity.this, MapsActivity.class);
+                    i.putExtra("restaurantName", name);
+                    i.putExtra("coord", coord);
+                    startActivity(i);
+
+                }
+            });
+
+            showItinary.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String uri = "http://maps.google.com/maps?daddr=" + coord.latitude + "," + coord.longitude + " (" + name + ")";
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                    intent.setPackage("com.google.android.apps.maps");
+                    try
+                    {
+                        startActivity(intent);
+                    }
+                    catch(ActivityNotFoundException ex)
+                    {
+                        try
+                        {
+                            Intent unrestrictedIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
+                            startActivity(unrestrictedIntent);
+                        }
+                        catch(ActivityNotFoundException innerEx)
+                        {
+                            Toast.makeText(RestaurantActivity.this, "Please install a maps application", Toast.LENGTH_LONG).show();
+                        }
+                    }
                 }
             });
         }

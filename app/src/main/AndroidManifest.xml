@@ -38,10 +38,11 @@
         <activity
             android:name=".activities.LoginActivity"
             android:label="Login"
-            android:windowSoftInputMode="stateHidden"></activity>
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activities.HomeActivity"
-            android:label="Home">
+            android:label="Home"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.location.PROVIDERS_CHANGED" />
             </intent-filter>
@@ -69,7 +70,10 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyDqqSFyspkp3tqxfG-HW8e2iLspMxe5HV8" />
 
-        <activity android:name=".activities.RestaurantActivity"></activity>
+        <activity
+            android:name=".activities.RestaurantActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".activities.CartActivity"></activity>
     </application>
 
 </manifest>
