@@ -1,6 +1,9 @@
 package stage.adapters;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,7 +24,10 @@ import java.util.List;
 
 import fr.hirsonf.stage.R;
 import stage.bo.Menu;
+import stage.utils.DBHelper;
 import stage.utils.GlideApp;
+
+import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by flohi on 10/01/2018.
@@ -76,21 +82,9 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
         holder.addToCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Carteasy cs = new Carteasy();
-                cs.add(menuIdsList.get(position), "name", menu.getName());
-                cs.add(menuIdsList.get(position), "description", menu.getDescription());
-                cs.add(menuIdsList.get(position), "price", menu.getPrice());
-                cs.add(menuIdsList.get(position), "picture", menu.getPicture());
-
                 String id = menuIdsList.get(position);
-                int quantity = cs.getInteger(id, "quantity", context.getApplicationContext());
-                ++quantity;
-                Log.d("Menu Adapter", "Quantity : " + quantity);
-                cs.update(menuIdsList.get(position), "quantity", quantity, context.getApplicationContext());
-
-                cs.commit(context.getApplicationContext());
-                Log.d("Menu Adapter", "Changes to cart saved");
-
+                DBHelper mydb = new DBHelper(context);
+                mydb.insertMenu(id, menu.getName(), menu.getDescription(), menu.getPrice(), menu.getPicture(), restaurantId);
             }
         });
     }

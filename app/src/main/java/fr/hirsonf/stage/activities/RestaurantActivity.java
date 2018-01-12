@@ -2,6 +2,7 @@ package fr.hirsonf.stage.activities;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -36,6 +37,7 @@ import butterknife.ButterKnife;
 import fr.hirsonf.stage.R;
 import stage.bo.Menu;
 import stage.bo.Restaurant;
+import stage.utils.DBHelper;
 import stage.utils.GlideApp;
 import stage.adapters.MenuAdapter;
 

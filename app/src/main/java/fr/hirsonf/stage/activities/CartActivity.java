@@ -1,5 +1,7 @@
 package fr.hirsonf.stage.activities;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,29 +12,34 @@ import java.util.Map;
 
 import fr.hirsonf.stage.R;
 import stage.bo.Menu;
+import stage.utils.DBHelper;
 
 public class CartActivity extends AppCompatActivity {
+    private String TAG = CartActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
 
-        Map<Integer, Map> data;
-        Carteasy cs = new Carteasy();
-        data = cs.ViewAll(getApplicationContext());
+        DBHelper mydb = new DBHelper(this);
+        Cursor res = mydb.getAllMenus();
+        res.moveToFirst();
 
-        for (Map.Entry<Integer, Map> entry : data.entrySet()) {
-            //get the Id
-            Log.d("Key: ","" + entry.getKey());
-            Log.d("Value: ", "" + entry.getValue());
+        while(!res.isAfterLast()){
+            String text = "";
+            StringBuilder sb = new StringBuilder();
 
-            //Get the items tied to the Id
-            Map<String, String> innerdata = entry.getValue();
-            for (Map.Entry<String, String> innerentry : innerdata.entrySet()) {
-                Log.d("Inner Key: ",innerentry.getKey());
-                Log.d("Inner Value: ",innerentry.getValue());
+            for(int i = 0; i < res.getColumnCount(); ++i) {
+                sb.append(res.getColumnName(i));
+                sb.append(" : ");
+                sb.append(res.getString(i));
+                sb.append(", ");
             }
+            text = sb.toString();
+            Log.d(TAG, text);
+            res.moveToNext();
         }
+
     }
 }

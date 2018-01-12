@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.IntentSender;
 import android.content.pm.PackageManager;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationManager;
@@ -201,6 +202,8 @@ public class HomeActivity extends AppCompatActivity  {
         idList = new ArrayList<>();
         distanceList = new ArrayList<>();
         coordList = new ArrayList<>();
+
+
 
         // use a linear layout manager
         mLayoutManager = new LinearLayoutManager(this);
