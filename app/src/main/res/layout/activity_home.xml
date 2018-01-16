@@ -76,36 +76,20 @@
                 android:gravity="center_horizontal"
                 />
 
-            <com.edmodo.rangebar.RangeBar
-                android:id="@+id/rangebar"
+            <SeekBar
+                android:id="@+id/price_bar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                />
+                android:max="45"
+                android:progress="0"
+                android:secondaryProgress="20"/>
 
-            <LinearLayout
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="2"
-                android:layout_margin="8dp"
-                >
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:id="@+id/t_min_price"
-                    android:text="Min : 5€"
-                    android:gravity="center_horizontal"/>
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:id="@+id/t_max_price"
-                    android:text="Max : 50€"
-                    android:gravity="center_horizontal"/>
-
-            </LinearLayout>
+                android:id="@+id/t_price"
+                android:text="Price : 5£"
+                android:gravity="center_horizontal"/>
 
             <TextView
                 android:layout_width="match_parent"
@@ -117,7 +101,7 @@
                 />
 
             <SeekBar
-                android:id="@+id/seekbar"
+                android:id="@+id/range_bar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:progress="20"

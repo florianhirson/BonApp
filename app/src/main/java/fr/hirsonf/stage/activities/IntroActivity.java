@@ -24,13 +24,6 @@ public class IntroActivity extends AppIntro{
 
         // Note here that we DO NOT use setContentView();
 
-        // Add your slide fragments here.
-        // AppIntro will automatically generate the dots indicator and buttons.
-        //addSlide(firstFragment);
-        //addSlide(secondFragment);
-        //addSlide(thirdFragment);
-        //addSlide(fourthFragment);
-
         // Ask for ACCESS_FINE_LOCATION permission on the second slide
 
         askForPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 2);
@@ -50,11 +43,6 @@ public class IntroActivity extends AppIntro{
                 getColor(R.color.accent),
                 getColor(R.color.accent)));
 
-        addSlide(AppIntroFragment.newInstance("Titre 3! ", "", "Description 3!!! ", "",
-                R.drawable.logo,
-                getColor(R.color.primary),
-                getColor(R.color.accent),
-                getColor(R.color.accent)));
 
         // OPTIONAL METHODS
         // Override bar/separator color.

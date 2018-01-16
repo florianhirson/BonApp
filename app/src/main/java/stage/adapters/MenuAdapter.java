@@ -1,9 +1,6 @@
 package stage.adapters;
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,13 +9,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.carteasy.v1.lib.Carteasy;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -26,8 +20,6 @@ import fr.hirsonf.stage.R;
 import stage.bo.Menu;
 import stage.utils.DBHelper;
 import stage.utils.GlideApp;
-
-import static android.content.Context.MODE_PRIVATE;
 
 /**
  * Created by flohi on 10/01/2018.
@@ -38,12 +30,14 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
     private Context context;
     private List<String> menuIdsList;
     private String restaurantId;
+    private RecyclerView recyclerView;
 
-    public MenuAdapter(HashMap<String,Menu> menuList, Context context, List<String> menuIdsList, String restaurantId) {
+    public MenuAdapter(HashMap<String,Menu> menuList, Context context, List<String> menuIdsList, String restaurantId, RecyclerView recyclerView) {
         this.menuList = menuList;
         this.context = context;
         this.menuIdsList = menuIdsList;
         this.restaurantId = restaurantId;
+        this.recyclerView = recyclerView;
     }
 
     @Override
@@ -58,13 +52,13 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(MenuAdapter.ViewHolder holder, final int position) {
+    public void onBindViewHolder(final MenuAdapter.ViewHolder holder, final int position) {
         String key = (String) menuList.keySet().toArray()[position];
         final Menu menu = menuList.get(key);
         holder.menuName.setText(menu.getName());
         holder.menuDescription.setText(menu.getDescription());
         holder.menuPrice.setText("Price : " + menu.getPrice() + " £");
-        holder.menuTime.setText("Waiting time : " + menu.getTime() + " min");
+        holder.menuTime.setText("Eating time : " + menu.getTime() + " min");
         StorageReference storageReference = FirebaseStorage
                 .getInstance()
                 .getReference("restaurantResources")
@@ -85,6 +79,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder> {
                 String id = menuIdsList.get(position);
                 DBHelper mydb = new DBHelper(context);
                 mydb.insertMenu(id, menu.getName(), menu.getDescription(), menu.getPrice(), menu.getPicture(), restaurantId);
+                recyclerView.setVisibility(View.VISIBLE);
             }
         });
     }

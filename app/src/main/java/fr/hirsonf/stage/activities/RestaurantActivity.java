@@ -96,7 +96,7 @@ public class RestaurantActivity extends AppCompatActivity {
             // use a linear layout manager
             mLayoutManager = new LinearLayoutManager(this);
             recyclerView.setLayoutManager(mLayoutManager);
-            adapter = new MenuAdapter(menuHashMap, this,  menuIdsList, id);
+            adapter = new MenuAdapter(menuHashMap, this,  menuIdsList, id, recyclerView);
             recyclerView.setItemAnimator(new DefaultItemAnimator());
             recyclerView.setAdapter(adapter);
             recyclerView.setHasFixedSize(false);
@@ -130,7 +130,7 @@ public class RestaurantActivity extends AppCompatActivity {
                     restaurant = dataSnapshot.getValue(Restaurant.class);
                     Log.d(TAG, restaurant.toString());
                     tAveragePrice.setText("Average price : " + restaurant.getAveragePrice() + " £");
-                    tWaitingTime.setText("Average waiting time : " + restaurant.getWaitingTime() + " min");
+                    tWaitingTime.setText("Average eating time : " + restaurant.getWaitingTime() + " min");
                     menuHashMap.putAll(restaurant.getRestaurantMenus());
                     for(Map.Entry<String, Menu> entry : menuHashMap.entrySet()) {
                         String key = entry.getKey();

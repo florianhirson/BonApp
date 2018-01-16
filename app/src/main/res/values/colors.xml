@@ -5,9 +5,9 @@
     <color name="colorTitle">#212121</color>
     <color name="colorDesc">#212121</color>
 
-    <color name="primary">#E43F3F</color>
-    <color name="primary_dark">#E12929</color>
-    <color name="primary_darker">#CC1D1D</color>
+    <color name="primary">#424242</color>
+    <color name="primary_dark">#212121</color>
+    <color name="primary_darker">#222222</color>
     <color name="accent">#ffffff</color>
 
     <color name="black">#000000</color>

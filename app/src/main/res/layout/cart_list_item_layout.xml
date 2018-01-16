@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="8dp">
 
@@ -26,7 +26,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-
+            android:layout_weight="1"
             android:paddingLeft="8dp"
             android:orientation="vertical">
 
@@ -60,15 +60,7 @@
                 android:textSize="14sp"
                 android:textColor="@color/accent"/>
 
-            <TextView
-                android:id="@+id/menuTime"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:maxLines="4"
-                android:text="The Menu average waiting time"
-                android:textSize="14sp"
-                android:textColor="@color/accent"/>
+
 
 
 
@@ -76,6 +68,7 @@
         <biz.kasual.materialnumberpicker.MaterialNumberPicker
             android:layout_width="wrap_content"
             android:layout_height="100dp"
+            android:id="@+id/material_number_picker"
             app:npMinValue="1"
             app:npMaxValue="50"
             app:npDefaultValue="10"

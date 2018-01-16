@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout android:layout_height="match_parent"
+<RelativeLayout
+    android:layout_height="match_parent"
     android:layout_width="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -11,9 +12,51 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Cart"
+        android:id="@+id/title"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
         android:gravity="center_horizontal"/>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/cart_is_empty"
+        android:layout_below="@id/title"
+        android:visibility="invisible"
+        android:text="Cart is empty ! Please add some menus !"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/buttons"
+        android:layout_below="@id/title"
+        android:id="@+id/recycler_view">
+
+    </android.support.v7.widget.RecyclerView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttons"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+
+        <android.support.v7.widget.AppCompatButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Empty cart"
+            android:id="@+id/empty_cart"
+            />
+
+        <android.support.v7.widget.AppCompatButton
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:id="@+id/checkout"
+            android:text="checkout"
+            />
+    </LinearLayout>
 
 
-</LinearLayout>
+
+</RelativeLayout>

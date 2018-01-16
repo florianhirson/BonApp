@@ -69,9 +69,9 @@ public class DBHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public Cursor getData(int id) {
+    public Cursor getData(String id) {
         SQLiteDatabase db = this.getReadableDatabase();
-        return db.rawQuery( "select * from contacts where id="+id+"", null );
+        return db.rawQuery( "select * from cart where id="+id+"", null );
     }
 
     public int numberOfRows(){
@@ -101,12 +101,19 @@ public class DBHelper extends SQLiteOpenHelper {
         db.update("cart", contentValues, "id = ? ", new String[] { id } );
     }
 
-    public Integer deleteContact (String id) {
+    public Integer deleteMenu (String id) {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.delete("cart",
                 "id = ? ",
                 new String[] { id });
     }
+
+    public void emptyCart() {
+        onUpgrade(this.getReadableDatabase(), 0, 1);
+
+    }
+
+
 
     public Cursor getAllMenus() {
         SQLiteDatabase db = this.getReadableDatabase();

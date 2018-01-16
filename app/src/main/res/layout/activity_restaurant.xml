@@ -89,7 +89,7 @@
         android:id="@+id/waiting_time"
         android:textSize="16sp"
         android:textStyle="bold"
-        android:text="Average waiting time : "/>
+        android:text="Average eating time : "/>
 
     <TextView
         android:layout_width="match_parent"

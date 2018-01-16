@@ -45,6 +45,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.internal.zzdnc;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -86,10 +87,9 @@ public class HomeActivity extends AppCompatActivity  {
     @BindView(R.id.my_toolbar) Toolbar myToolbar;
     @BindView(R.id.search) Button search;
     @BindView(R.id.toggle_expand) Button expand;
-    @BindView(R.id.t_max_price) TextView maxPrice;
-    @BindView(R.id.t_min_price) TextView minPrice;
-    @BindView(R.id.rangebar) RangeBar rangebar;
-    @BindView(R.id.seekbar) SeekBar seekBar;
+    @BindView(R.id.t_price) TextView tPrice;
+    @BindView(R.id.price_bar) SeekBar priceBar;
+    @BindView(R.id.range_bar) SeekBar rangeBar;
     @BindView(R.id.t_rayon) TextView rayon;
     @BindView(R.id.radiogroup_address_type) RadioGroup radioGroupAddressType;
     @BindView(R.id.expandable_layout) ExpandableLayout expandableLayout;
@@ -101,12 +101,11 @@ public class HomeActivity extends AppCompatActivity  {
 
     private FirebaseAuth mAuth;
     private static long back_pressed;
-    private int leftIndex;
-    private int rightIndex;
-    private int minValue;
     private int maxValue;
     private Place selectedPlace;
     private String restaurantName;
+    private boolean match = false;
+    int min = 5;
 
     ArrayList<Restaurant> restaurantlist;
     ArrayList<String> idList;
@@ -237,35 +236,26 @@ public class HomeActivity extends AppCompatActivity  {
 
         if(savedInstanceState != null) {
             if(savedInstanceState.containsKey("range")) {
-                seekBar.setProgress(savedInstanceState.getInt("range"));
+                rangeBar.setProgress(savedInstanceState.getInt("range"));
             }
             if(savedInstanceState.containsKey("leftIndex")) {
-                rangebar.setLeft(savedInstanceState.getInt("leftIndex"));
+                rangeBar.setLeft(savedInstanceState.getInt("leftIndex"));
             }
             if(savedInstanceState.containsKey("rightIndex")) {
-                rangebar.setRight(savedInstanceState.getInt("rightIndex"));
+                rangeBar.setRight(savedInstanceState.getInt("rightIndex"));
             }
             if(savedInstanceState.containsKey(KEY_LOCATION)) {
                 mLastKnownLocation = savedInstanceState.getParcelable(KEY_LOCATION);
             }
 
-            minValue = savedInstanceState.getInt("leftIndex") * 5 + 5;
             maxValue = savedInstanceState.getInt("rightIndex") * 5 + 5;
-            String minText = "Min : " + minValue + "€";
-            String maxText = "Max : " + maxValue + "€";
-            minPrice.setText(minText);
-            maxPrice.setText(maxText);
+            String maxText = "Max : " + maxValue + "£";
+            tPrice.setText(maxText);
         }
 
         mAuth = FirebaseAuth.getInstance();
         setSupportActionBar(myToolbar);
 
-        rangebar.setTickCount(10);
-        rangebar.setTickHeight(0);
-        rangebar.setBarColor(Color.WHITE);
-        rangebar.setConnectingLineColor(Color.WHITE);
-        rangebar.setThumbColorNormal(Color.parseColor("#CCFFEBEE"));
-        rangebar.setThumbColorPressed(Color.parseColor("#CCFFCDD2"));
 
         final PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
@@ -299,22 +289,26 @@ public class HomeActivity extends AppCompatActivity  {
             }
         });
 
-
-        rangebar.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
+        priceBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
-            public void onIndexChangeListener(RangeBar rangeBar, int leftThumbIndex, int rightThumbIndex) {
-                minValue = leftThumbIndex * 5 + 5;
-                maxValue = rightThumbIndex * 5 + 5;
-                leftIndex = leftThumbIndex;
-                rightIndex = rightThumbIndex;
-                String minText = "Min : " + minValue + "€";
-                String maxText = "Max : " + maxValue + "€";
-                minPrice.setText(minText);
-                maxPrice.setText(maxText);
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                maxValue = min + progress;
+                String maxText = "Max : " + maxValue + "£";
+                tPrice.setText(maxText);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
             }
         });
 
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        rangeBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 range = progress;
@@ -373,8 +367,7 @@ public class HomeActivity extends AppCompatActivity  {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt("leftIndex", leftIndex);
-        outState.putInt("rightIndex", rightIndex);
+        outState.putInt("price", maxValue);
         outState.putInt("range", range);
         outState.putParcelable(KEY_LOCATION, mLastKnownLocation);
 
@@ -383,15 +376,11 @@ public class HomeActivity extends AppCompatActivity  {
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-        seekBar.setProgress(savedInstanceState.getInt("range"));
-        rangebar.setLeft(savedInstanceState.getInt("leftIndex"));
-        rangebar.setRight(savedInstanceState.getInt("rightIndex"));
-        minValue = savedInstanceState.getInt("leftIndex") * 5 + 5;
-        maxValue = savedInstanceState.getInt("rightIndex") * 5 + 5;
-        String minText = "Min : " + minValue + "€";
-        String maxText = "Max : " + maxValue + "€";
-        minPrice.setText(minText);
-        maxPrice.setText(maxText);
+        rangeBar.setProgress(savedInstanceState.getInt("range"));
+        priceBar.setProgress(savedInstanceState.getInt("price"));
+        maxValue = savedInstanceState.getInt("rightIndex");
+        String maxText = "Max : " + maxValue + "£";
+        tPrice.setText(maxText);
     }
 
     @Override
@@ -406,10 +395,17 @@ public class HomeActivity extends AppCompatActivity  {
 
             case R.id.action_settings:
                 mAuth.signOut();
+                FirebaseAuth.getInstance().signOut();
                 intent = new Intent(HomeActivity.this, LoginActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+                finish();
                 return true;
+
+            case R.id.action_cart:
+                intent = new Intent(HomeActivity.this, CartActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
 
             default:
                 // If we got here, the user's action was not recognized.
@@ -710,7 +706,8 @@ public class HomeActivity extends AppCompatActivity  {
                 int distance = (int) location1.distanceTo(location2);
                 distanceList.add(distance);
                 coordList.add(new LatLng(location.latitude, location.longitude));
-                getRestaurantName(key);
+                matchPriceCriteria(maxValue, key);
+
             }
 
             @Override
@@ -775,6 +772,36 @@ public class HomeActivity extends AppCompatActivity  {
                 Log.w(TAG,"list size : " + adapter.getItemCount());
             }
         });
+    }
+
+    private void matchPriceCriteria(final int maxPrice, final String id) {
+        DatabaseReference ref = FirebaseDatabase.getInstance()
+                .getReference("restaurants")
+                .child(id)
+                .child("averagePrice");
+
+
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.getValue() != null) {
+                    long averagePrice = (long) dataSnapshot.getValue();
+                    if (averagePrice <= maxPrice) {
+                        match = true;
+                    } else {
+                        match = false;
+                    }
+                    if (match)
+                        getRestaurantName(id);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                match = false;
+            }
+        });
+
     }
 
     /**
